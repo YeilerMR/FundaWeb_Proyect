@@ -1,0 +1,38 @@
+name: Create PR from dev to main
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: dev  # Asegura que estás en la rama dev
+
+      - name: Create or update PR from dev → main
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: sync dev → main"
+          branch: sync/dev-to-main     # Esta es la rama que se crea/actualiza
+          title: "🚀 Preparing release to main"
+          body: |
+            Este PR sincroniza los últimos cambios de **dev** en **main**.
+            
+            > ℹ️ **No hay pruebas automatizadas aún** — por favor, revisa manualmente antes de aprobar.
+            
+            ✅ Checklist sugerido:
+            - [ ] Probado localmente
+            - [ ] Revisado por al menos 1 persona
+            - [ ] No hay errores visibles
+          base: main
+          delete-branch: false  # opcional: mantiene la rama después del merge
