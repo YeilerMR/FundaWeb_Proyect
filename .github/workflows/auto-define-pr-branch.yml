@@ -1,0 +1,44 @@
+name: Auto-define PR base branch
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  check-pr-base:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Determine expected base
+        id: determine
+        run: |
+          head="${{ github.event.pull_request.head.ref }}"
+          current_base="${{ github.event.pull_request.base.ref }}"
+          if [[ "$head" == feature/* ]]; then
+            expected="dev"
+          elif [[ "$head" == dev ]]; then
+            expected="main"
+          else
+            expected=""
+          fi
+          echo "expected_base=$expected" >> $GITHUB_OUTPUT
+          echo "current_base=$current_base" >> $GITHUB_OUTPUT
+
+      - name: Comment if base is incorrect
+        if: steps.determine.outputs.expected_base != '' && steps.determine.outputs.expected_base != steps.determine.outputs.current_base
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const headRef = '${{ github.event.pull_request.head.ref }}';
+            const currentBase = '${{ steps.determine.outputs.current_base }}';
+            const expectedBase = '${{ steps.determine.outputs.expected_base }}';
+            const comment = `**Branching policy mismatch**\n\nYour PR is targeting \`${currentBase}\`, but based on your branch name \`${headRef}\`, it should target \`${expectedBase}\`.\n\n> Our flow: \`feature/* → dev → main\`\n\nPlease close this PR and open a new one against \`${expectedBase}\`, or rebase and change the base manually if you're sure it's safe.`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: comment
+            });
