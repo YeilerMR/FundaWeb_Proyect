@@ -19,36 +19,13 @@ $(document).ready(function () {
         mirror: false
     });
 
-    // DATA DEL SLIDER
-    const heroSlidesData = [
-        {
-            imagen: "https://picsum.photos/1600/800?random=1",
-            titulo: "Directorio de Comercios",
-            subtitulo: "Encuentra lo mejor de tu ciudad",
-            enlace: "#"
-        },
-        {
-            imagen: "https://picsum.photos/1600/800?random=2",
-            titulo: "Descubre negocios destacados",
-            subtitulo: "Explora nuestro directorio actualizado",
-            enlace: "#"
-        },
-        {
-            imagen: "https://picsum.photos/1600/800?random=3",
-            titulo: "Tu guía comercial confiable",
-            subtitulo: "Negocios, productos y servicios cerca de ti",
-            enlace: "#"
-        }
-    ];
+    // OBTENER DATA DEL SLIDER DESDE BLADE
+    const heroSlidesData = JSON.parse($('#heroSlickData').attr('data-slides'));
 
+    // PRE-CARGA DE IMÁGENES
     heroSlidesData.forEach(slide => {
         const img = new Image();
         img.src = slide.imagen;
-    });
-
-    // AGREGAR SLIDES (solo como contenedores)
-    heroSlidesData.forEach(function (slide) {
-        $('.hero-slick').append(`<div class="hero-slide"></div>`);
     });
 
     // INICIALIZAR SLICK
@@ -66,38 +43,37 @@ $(document).ready(function () {
         nextArrow: $('.hero-arrow.right')
     });
 
-    // ACTUALIZAR FONDO Y TEXTO EN CADA SLIDE
+    // ACTUALIZAR FONDO Y TEXTO 
     function updateHeroContent(index) {
         const slide = heroSlidesData[index];
 
-        // Fondo
+        // Fondo del contenedor global
         $('.hero-section').css({
             backgroundImage: `url(${slide.imagen})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center'
         });
 
-        // Remover estado anterior
+        // Animación del texto
         $('.hero-content').removeClass('show');
 
-        // Texto
         setTimeout(() => {
             $('.hero-title').text(slide.titulo);
             $('.hero-subtitle').text(slide.subtitulo);
-            $('.btn-slider').attr('href', slide.enlace);
+            $('.btn-slider').attr('href', slide.enlace ?? '#');
             $('.hero-content').addClass('show');
-        }, 300); // pequeño delay 
+        }, 300);
     }
 
-    // PRIMER SLIDE
+    // Primer slide
     updateHeroContent(0);
 
-    // En el afterChange
+    // Cuando cambia slick
     $('.hero-slick').on('afterChange', function (event, slick, currentSlide) {
         updateHeroContent(currentSlide);
     });
 
-    // Inicializar fancybox
+    // Fancybox (por si se usa luego)
     if (window.Fancybox) {
         Fancybox.bind('[data-fancybox="galeria"]', {
             Thumbs: { autoStart: true },
