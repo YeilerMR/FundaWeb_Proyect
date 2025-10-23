@@ -58,8 +58,7 @@
                                             method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn-action delete"
-                                                onclick="return confirm('¿Eliminar este slide?')" title="Eliminar">
+                                            <button class="btn-action delete">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
