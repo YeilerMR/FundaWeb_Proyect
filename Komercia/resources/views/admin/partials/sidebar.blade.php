@@ -15,7 +15,7 @@
         <a href="{{ route('admin.dashboard') }}" class="sidebar-link @yield('menu_dashboard')">
             <i class="bi bi-speedometer2"></i><span>Dashboard</span>
         </a>
-        <a href="#" class="sidebar-link @yield('menu_comercios')">
+        <a href="#" class="sidebar-link @yield('menu_commerce')">
             <i class="bi bi-shop"></i><span>Comercios</span>
         </a>
         <a href="#" class="sidebar-link @yield('menu_categorias')">
