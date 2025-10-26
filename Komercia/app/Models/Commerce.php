@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Comercio extends Model
+class Commerce extends Model
 {
-    protected $table = 'tsim_comercio';
+   protected $table = 'tsim_comercio';
     protected $primaryKey = 'id_comercio';
     public $timestamps = false;
 
