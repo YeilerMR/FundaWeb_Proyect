@@ -18,7 +18,7 @@
         <a href="#" class="sidebar-link @yield('menu_commerce')">
             <i class="bi bi-shop"></i><span>Comercios</span>
         </a>
-        <a href="#" class="sidebar-link @yield('menu_categorias')">
+        <a href="{{ route('admin.category.index') }}" class="sidebar-link @yield('menu_categorias')">
             <i class="bi bi-tag"></i><span>Categorías</span>
         </a>
         <a href="{{ route('admin.slider.index') }}" class="sidebar-link @yield('menu_slider')">

@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\CommerceController;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Landing\LandingController;
+use App\Http\Controllers\Admin\ControllerCategory;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 
@@ -12,4 +14,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('slider', SliderController::class)->names('slider');
 
     Route::resource('commerce', CommerceController::class)->names('commerce');
+    Route::resource('category', ControllerCategory::class)->names('category');
 });
+
+
+
