@@ -58,15 +58,11 @@ class SliderController extends Controller
         $data = [
             'dsc_titulo' => $request->dsc_titulo,
             'dsc_descripcion' => $request->dsc_subtitulo,
+            'dsc_enlace'      => $request->dsc_enlace,
         ];
 
-        // si sube nueva imagen → eliminar la anterior
         if ($request->hasFile('dsc_imagen')) {
-
-            // 1) Eliminar físicamente la imagen anterior
             ImageService::delete($slider->dsc_imagen);
-
-            // 2) Subir la nueva
             $data['dsc_imagen'] = ImageService::upload($request->file('dsc_imagen'), 'sliders');
         }
 
