@@ -11,7 +11,7 @@ class CommerceController extends Controller
 {
     public function index()
     {
-        $commerces = Commerce::all();
+        $commerces = Commerce::with('categories')->get();
         return view('admin.commerce.index', compact('commerces'));
     }
 

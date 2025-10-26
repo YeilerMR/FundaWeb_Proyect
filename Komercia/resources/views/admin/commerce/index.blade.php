@@ -22,7 +22,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h1 class="h4 fw-bold m-0">Gestión de Comercios</h1>
                 <a href="{{ route('admin.commerce.create') }}" class="btn btn-primary-custom">
-                {{-- <a href="#" class="btn btn-primary-custom"> --}}
+                    {{-- <a href="#" class="btn btn-primary-custom"> --}}
                     <i class="bi bi-plus-lg me-1"></i> Nuevo Comercio
                 </a>
             </div>
@@ -49,12 +49,12 @@
                                 </td>
                                 <td data-label="Categorías">
                                     @php
-                                        $categories = collect($commerce->categories)->take(2);
-                                        $remaining = collect($commerce->categories)->count() - 2;
+                                        $categories = $commerce->categories->take(2);
+                                        $remaining = $commerce->categories->count() - 2;
                                     @endphp
 
                                     @forelse ($categories as $category)
-                                        <span class="comercio-category">{{ $category->name }}</span>
+                                        <span class="comercio-category">{{ $category->dsc_nombre }}</span>
                                     @empty
                                         <span class="text-muted">-</span>
                                     @endforelse
@@ -65,7 +65,8 @@
                                 </td>
                                 <td data-label="Acciones" class="text-end">
                                     <div class="table-actions">
-                                        <a href="{{ route('admin.commerce.edit', $commerce->id_comercio) }}" class="btn-action edit" title="Editar">
+                                        <a href="{{ route('admin.commerce.edit', $commerce->id_comercio) }}"
+                                            class="btn-action edit" title="Editar">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <a href="galeria.html" class="btn-action gallery" title="Galería">
