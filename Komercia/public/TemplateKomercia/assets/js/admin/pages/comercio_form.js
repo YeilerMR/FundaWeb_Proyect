@@ -1,4 +1,5 @@
 $(function () {
+
    /* ===== Imagen destacada (preview) ===== */
    const $cInput = $("#commerceImage");
    const $cThumb = $("#commerceThumb");
@@ -16,31 +17,68 @@ $(function () {
       });
    }
 
-   /* ===== Inicializar módulos existentes ===== */
+   /* ===== Inicializar módulos ===== */
    CategoriesModule.init();
-   TagsModule.create($("#phonesTags"), {
+
+   const phonesInstance = TagsModule.create($("#phonesTags"), {
       name: $("#phonesTags").data("name"),
       type: $("#phonesTags").data("type"),
       max: $("#phonesTags").data("max")
    });
-   TagsModule.create($("#emailsTags"), {
+
+   const emailsInstance = TagsModule.create($("#emailsTags"), {
       name: $("#emailsTags").data("name"),
       type: $("#emailsTags").data("type"),
       max: $("#emailsTags").data("max")
    });
+
    MapModule.init("map", "#latInput", "#lngInput");
 
-   /* ===== Pre-cargar datos en edición (si existen) ===== */
-   if (window.__COMMERCE_DATA__) {
-      const { categories = [], phones = [], emails = [] } = window.__COMMERCE_DATA__;
-      if (CategoriesModule.setSelected) CategoriesModule.setSelected(categories);
-      if (TagsModule.setValues) {
-         TagsModule.setValues($("#phonesTags"), phones);
-         TagsModule.setValues($("#emailsTags"), emails);
-      }
+   /* ===== Helper esperar ===== */
+   function waitUntil(checkFn, cb, { tries = 20, delay = 100 } = {}) {
+      let left = tries;
+      (function tick() {
+         if (checkFn()) return cb();
+         if (--left <= 0) return;
+         setTimeout(tick, delay);
+      })();
    }
 
-   /* ===== Guardar hidden inputs de categorías antes de enviar ===== */
+   /* ===== Precarga en modo edición ===== */
+   if (window.__COMMERCE_DATA__) {
+      const { categories = [], phones = [], emails = [] } = window.__COMMERCE_DATA__;
+
+      // 1) Categorías
+      waitUntil(
+         () => typeof CategoriesModule.setSelected === "function",
+         () => CategoriesModule.setSelected(categories.map(String)),
+         { tries: 30, delay: 100 }
+      );
+
+      // 2) Teléfonos / emails
+      waitUntil(
+         () => typeof TagsModule.setValues === "function",
+         () => {
+            TagsModule.setValues($("#phonesTags"), phones);
+            TagsModule.setValues($("#emailsTags"), emails);
+         },
+         { tries: 30, delay: 100 }
+      );
+
+      // 3) Mapa (refuerzo)
+      waitUntil(
+         () => typeof MapModule.setLatLng === "function",
+         () => {
+            const lat = parseFloat($("#latInput").val());
+            const lng = parseFloat($("#lngInput").val());
+            if (!isNaN(lat) && !isNaN(lng)) {
+               MapModule.setLatLng({ lat, lng });
+            }
+         },
+         { tries: 20, delay: 100 }
+      );
+   }
+
    function writeCategoriesHiddenInputs(ids) {
       const cont = $("#categoriesHidden");
       cont.empty();
@@ -49,20 +87,17 @@ $(function () {
       });
    }
 
-   /* ===== Validación Bootstrap + mínimos requeridos ===== */
+   /* ===== Validación ===== */
    const form = document.getElementById("comercioForm");
    form.addEventListener("submit", function (e) {
-      // 1) Valida HTML5 estándar
-      if (!form.checkValidity()) {
-         e.preventDefault(); e.stopPropagation();
-      }
 
-      // 2) Valida “mínimos” de los widgets custom
-      const catIds = (CategoriesModule.getSelectedIds && CategoriesModule.getSelectedIds()) || [];
+      const htmlValid = form.checkValidity();
+
+      const catIds = CategoriesModule.getSelectedIds ? CategoriesModule.getSelectedIds() : [];
       writeCategoriesHiddenInputs(catIds);
 
-      const phones = (TagsModule.getValues && TagsModule.getValues($("#phonesTags"))) || [];
-      const emails = (TagsModule.getValues && TagsModule.getValues($("#emailsTags"))) || [];
+      const phones = TagsModule.getValues($("#phonesTags")) || [];
+      const emails = TagsModule.getValues($("#emailsTags")) || [];
 
       let customInvalid = false;
 
@@ -76,7 +111,7 @@ $(function () {
          $("#categoriesFeedback").hide();
       }
 
-      // Teléfonos
+      // Telefónos
       if (phones.length < 1) {
          $("#phonesSection").addClass("is-invalid");
          $("#phonesFeedback").show();
@@ -96,11 +131,11 @@ $(function () {
          $("#emailsFeedback").hide();
       }
 
-      // Si algo falla, no enviamos
-      if (!form.checkValidity() || customInvalid) {
+      if (!htmlValid || customInvalid) {
          e.preventDefault(); e.stopPropagation();
       }
 
       form.classList.add("was-validated");
    }, false);
+
 });

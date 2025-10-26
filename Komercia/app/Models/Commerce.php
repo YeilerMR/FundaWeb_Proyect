@@ -32,4 +32,14 @@ class Commerce extends Model
             'id_categoria'
         );
     }
+
+    public function phones()
+    {
+        return $this->hasMany(PhoneCommerce::class, 'id_comercio', 'id_comercio');
+    }
+
+    public function emails()
+    {
+        return $this->hasMany(EmailCommerce::class, 'id_comercio', 'id_comercio');
+    }
 }

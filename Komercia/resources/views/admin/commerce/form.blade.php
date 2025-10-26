@@ -30,7 +30,7 @@
             </ol>
         </nav>
 
-        <!-- BOTONES  (solo modo editar) -->
+        {{-- <!-- BOTONES  (solo modo editar) -->
         <div id="extraActions" class="{{ isset($commerce) ? '' : 'd-none' }}">
             <a id="btnGestionGaleria" href="#" class="btn btn-outline-secondary">
                 <i class="bi bi-images me-1"></i> Gestionar Galería
@@ -38,7 +38,7 @@
             <a id="btnGestionProductos" href="#" class="btn btn-outline-secondary ms-1">
                 <i class="bi bi-basket2 me-1"></i> Gestionar Productos
             </a>
-        </div>
+        </div> --}}
 
         <!-- FORM -->
         <form id="comercioForm" class="needs-validation"
@@ -194,14 +194,13 @@
                                 <div class="col-6">
                                     <label class="form-label mt-2">Latitud</label>
                                     <input type="text" class="form-control" name="dsc_latitud" id="latInput"
-                                        value="{{ old('dsc_latitud', $commerce->dsc_latitud ?? '') }}" readonly required>
+                                        value="{{ old('dsc_latitud', $commerce->dsc_latitud ?? '') }}" required>
                                     <div class="invalid-feedback">La latitud es obligatoria.</div>
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label mt-2">Longitud</label>
                                     <input type="text" class="form-control" name="dsc_longitud" id="lngInput"
-                                        value="{{ old('dsc_longitud', $commerce->dsc_longitud ?? '') }}" readonly
-                                        required>
+                                        value="{{ old('dsc_longitud', $commerce->dsc_longitud ?? '') }}" required>
                                     <div class="invalid-feedback">La longitud es obligatoria.</div>
                                 </div>
                             </div>
@@ -248,6 +247,18 @@
             </div>
         </div>
     </div>
+
+    @php
+        $oldCategories = old('categories', isset($categoriesIds) ? $categoriesIds : []);
+        $oldPhones = old('telefonos', isset($phones) ? $phones : []);
+        $oldEmails = old('emails', isset($emails) ? $emails : []);
+    @endphp
+
+    @if (isset($categories))
+        <script>
+            window.__CATEGORIES_DATA__ = @json($categories);
+        </script>
+    @endif
 
     @if (isset($commerce))
         <script>
