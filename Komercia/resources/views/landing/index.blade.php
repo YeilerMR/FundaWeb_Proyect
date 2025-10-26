@@ -6,4 +6,5 @@
     @include('landing.partials.hero', ['sliders' => $sliders])
 
     {{-- luego más secciones aquí --}}
+    @include('landing.partials.search')
 @endsection
