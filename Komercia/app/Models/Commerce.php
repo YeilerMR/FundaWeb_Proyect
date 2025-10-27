@@ -42,8 +42,8 @@ class Commerce extends Model
         return $this->belongsToMany(
             Category::class,
             'tsim_comercio_categoria',
-            'id_categoria',
-            'id_comercio'
+            'id_comercio',
+            'id_categoria'
         );
     }
 }

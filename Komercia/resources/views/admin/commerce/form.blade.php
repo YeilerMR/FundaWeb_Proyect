@@ -74,13 +74,11 @@
                         <div class="form-group mb-3">
                             <label class="form-label">Imagen Destacada {{ isset($commerce) ? '' : '*' }}</label>
 
-                            <div class="img-thumb" id="commerceThumb"
-                                style="display:flex;align-items:center;justify-content:center;height:120px;border:1px dashed #ccc;border-radius:8px;">
+                            <div class="img-thumb" id="commerceThumb">
                                 @if (isset($commerce) && $commerce->dsc_imagen_destacada)
-                                    <img src="{{ asset($commerce->dsc_imagen_destacada) }}"
-                                        style="max-height:120px; border-radius:8px;">
+                                    <img src="{{ asset($commerce->dsc_imagen_destacada) }}">
                                 @else
-                                    <i class="bi bi-image" style="font-size:2rem;color:#888;"></i>
+                                    <i class="bi bi-image"></i>
                                 @endif
                             </div>
 
