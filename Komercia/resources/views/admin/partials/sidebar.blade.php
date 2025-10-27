@@ -15,10 +15,10 @@
         <a href="{{ route('admin.dashboard') }}" class="sidebar-link @yield('menu_dashboard')">
             <i class="bi bi-speedometer2"></i><span>Dashboard</span>
         </a>
-        <a href="#" class="sidebar-link @yield('menu_commerce')">
+        <a href="{{ route('admin.commerce.index') }}" class="sidebar-link @yield('menu_commerce')">
             <i class="bi bi-shop"></i><span>Comercios</span>
         </a>
-        <a href="{{ route('admin.category.index') }}" class="sidebar-link @yield('menu_categorias')">
+        <a href="{{ route('admin.category.index') }}" class="sidebar-link @yield('menu_category')">
             <i class="bi bi-tag"></i><span>Categorías</span>
         </a>
         <a href="{{ route('admin.slider.index') }}" class="sidebar-link @yield('menu_slider')">

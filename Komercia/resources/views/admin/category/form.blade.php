@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title', isset($category) ? 'Editar Categoría | Komercia' : 'Nuevo Categoría | Komercia')
-@section('menu_categorias', 'active')
+@section('menu_category', 'active')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('TemplateKomercia/assets/css/admin/form_style.css') }}">
