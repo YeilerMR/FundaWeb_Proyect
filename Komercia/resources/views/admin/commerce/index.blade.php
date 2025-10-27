@@ -69,7 +69,8 @@
                                             class="btn-action edit" title="Editar">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <a href="galeria.html" class="btn-action gallery" title="Galería">
+                                        <a href="{{ route('admin.commerce.gallery', $commerce->id_comercio) }}"
+                                            class="btn-action gallery" title="Galería">
                                             <i class="bi bi-images"></i>
                                         </a>
                                         <a href="/admin/productos/productos.html" class="btn-action products"

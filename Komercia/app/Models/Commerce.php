@@ -23,6 +23,11 @@ class Commerce extends Model
         'fec_modificacion'
     ];
 
+    public function gallery()
+    {
+        return $this->hasMany(CommerceImage::class, 'id_comercio', 'id_comercio');
+    }
+
     public function categories()
     {
         return $this->belongsToMany(

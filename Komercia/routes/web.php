@@ -14,8 +14,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('slider', SliderController::class)->names('slider');
 
     Route::resource('commerce', CommerceController::class)->names('commerce');
+    Route::get('commerce/{commerce}/gallery', [CommerceController::class, 'gallery'])
+        ->name('commerce.gallery');
+    Route::post('commerce/{commerce}/gallery', [CommerceController::class, 'galleryStore'])
+        ->name('commerce.gallery.store');
+        
     Route::resource('category', ControllerCategory::class)->names('category');
 });
-
-
-

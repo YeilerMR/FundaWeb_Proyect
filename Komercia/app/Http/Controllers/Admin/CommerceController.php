@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Commerce;
 use App\Models\Category;
+use App\Models\CommerceImage;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CommerceController extends Controller
 {
@@ -33,11 +35,6 @@ class CommerceController extends Controller
             ->with('success', 'Comercio creado correctamente.');
     }
 
-    public function show(string $id)
-    {
-        //
-    }
-
     public function edit(string $id)
     {
         $commerce = Commerce::with(['categories', 'phones', 'emails'])->findOrFail($id);
@@ -55,6 +52,7 @@ class CommerceController extends Controller
             'emails'
         ));
     }
+
     public function update(Request $request, string $id)
     {
         $this->validateCommerce($request, $isUpdate = true);
@@ -68,7 +66,10 @@ class CommerceController extends Controller
     public function destroy(string $id)
     {
         $commerce = Commerce::findOrFail($id);
+
         ImageService::delete($commerce->dsc_imagen_destacada);
+        Storage::disk('public')->deleteDirectory("commerces/{$commerce->id_comercio}");
+
         $commerce->delete();
 
         return back()->with('success', 'Comercio eliminado correctamente.');
@@ -104,7 +105,10 @@ class CommerceController extends Controller
             if ($commerce->dsc_imagen_destacada) {
                 ImageService::delete($commerce->dsc_imagen_destacada);
             }
-            $path = ImageService::upload($request->file('dsc_imagen_destacada'), 'commerces');
+            $path = ImageService::upload(
+                $request->file('dsc_imagen_destacada'),
+                "commerces/{$commerce->id_comercio}"
+            );
             $commerce->update(['dsc_imagen_destacada' => $path]);
         }
 
@@ -119,5 +123,55 @@ class CommerceController extends Controller
         foreach ($request->emails as $email) {
             $commerce->emails()->create(['dsc_correo' => $email]);
         }
+    }
+
+    /* ==============================
+       GALERÍA
+       ============================== */
+
+    public function gallery($id)
+    {
+        $commerce = Commerce::with('gallery')->findOrFail($id);
+        return view('admin.commerce.gallery', compact('commerce'));
+    }
+
+    public function galleryStore($id, Request $request)
+    {
+        $commerce = Commerce::findOrFail($id);
+
+        // VALIDACIÓN más flexible
+        $request->validate([
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048'
+        ]);
+
+        /* ===============================
+        1. ELIMINAR IMÁGENES MARCADAS
+    ================================= */
+        if ($request->has('delete_images')) {
+            foreach ($request->delete_images as $imageId) {
+                $image = CommerceImage::find($imageId);
+                if ($image) {
+                    ImageService::delete($image->dsc_url); // elimina del storage
+                    $image->delete();                     // elimina de BD
+                }
+            }
+        }
+
+        /* ===============================
+        2. SUBIR NUEVAS IMÁGENES
+    ================================= */
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = ImageService::upload($file, "commerces/{$commerce->id_comercio}/gallery");
+
+                CommerceImage::create([
+                    'id_comercio' => $commerce->id_comercio,
+                    'dsc_url'     => $path,
+                    'dsc_alt'     => $commerce->dsc_nombre,
+                ]);
+            }
+        }
+
+        return back()->with('success', 'Cambios guardados correctamente.');
     }
 }
