@@ -1,21 +1,16 @@
 $(function () {
 
    /* ===== Imagen destacada (preview) ===== */
-   const $cInput = $("#commerceImage");
-   const $cThumb = $("#commerceThumb");
-   if ($cInput.length && $cThumb.length) {
-      $cInput.on("change", function (e) {
-         const file = e.target.files && e.target.files[0];
-         if (!file) return;
-         const allowed = ["image/jpeg", "image/png", "image/webp"];
-         const maxBytes = 2 * 1024 * 1024;
-         if (!allowed.includes(file.type)) { this.value = ""; alert("Formato no permitido. Usa JPG, PNG o WEBP."); return; }
-         if (file.size > maxBytes) { this.value = ""; alert("La imagen supera 2MB."); return; }
-         const url = URL.createObjectURL(file);
-         $cThumb.html(`<img src="${url}" alt="preview" style="max-height:120px;border-radius:8px;">`);
-         $cThumb.find("img").on("load", () => URL.revokeObjectURL(url));
-      });
-   }
+   const $fileInput = $("#commerceImage");
+   const $thumb = $("#commerceThumb");
+
+   $fileInput.on("change", function (e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const url = URL.createObjectURL(file);
+      $thumb.html(`<img src="${url}" alt="preview">`);
+   });
 
    /* ===== Inicializar módulos ===== */
    CategoriesModule.init();
