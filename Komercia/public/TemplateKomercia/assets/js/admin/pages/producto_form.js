@@ -13,21 +13,10 @@ $(function () {
         const url = URL.createObjectURL(file);
         $thumb.html(`<img src="${url}" alt="preview">`);
     });
-
-    /* ===============================
-       SUBMIT (demo)
-       -> Luego / Laravel
-    ================================ */
-    $("#productoForm").on("submit", function (e) {
-        e.preventDefault();
-
-        // Simple validación manual: imagen obligatoria
-        if (!$fileInput[0].files.length) {
-            $fileInput.addClass("is-invalid");
-            return;
-        }
-
-        alert("Producto listo para enviar (demo).");
-    });
+    
+    // Validación general de formularios (si aplica en esta página)
+    if ($(".needs-validation").length) {
+        ValidationModule.init();
+    }
 
 });

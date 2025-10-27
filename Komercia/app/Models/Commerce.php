@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Commerce extends Model
 {
-   protected $table = 'tsim_comercio';
+    protected $table = 'tsim_comercio';
     protected $primaryKey = 'id_comercio';
     public $timestamps = false;
 
@@ -23,6 +23,20 @@ class Commerce extends Model
         'fec_modificacion'
     ];
 
+    public function gallery()
+    {
+        return $this->hasMany(CommerceImage::class, 'id_comercio', 'id_comercio');
+    }
+
+    public function phones()
+    {
+        return $this->hasMany(PhoneCommerce::class, 'id_comercio', 'id_comercio');
+    }
+
+    public function emails()
+    {
+        return $this->hasMany(EmailCommerce::class, 'id_comercio', 'id_comercio');
+    }
     // Relacion 1 a N con categorias
     public function categories(){
         return $this->belongsToMany(

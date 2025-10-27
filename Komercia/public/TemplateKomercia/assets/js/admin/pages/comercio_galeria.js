@@ -2,30 +2,76 @@ $(function () {
 
     const $grid = $("#galleryGrid");
     const $empty = $("#galleryEmpty");
+    const $form = $("#formGallery");
 
-    // Helper: mostrar u ocultar placeholder
+    window.galleryPendingDelete = [];
+
     function togglePlaceholder() {
-        if ($grid.children().length === 0) console.log("Empty");
+        if ($grid.children().length === 0) $empty.show();
         else $empty.hide();
     }
 
-    // Inicialización de la galería
     GalleryModule.bind($("#galleryDrop"), $grid, $("#galleryInput"), $("#btnPickGallery"), togglePlaceholder);
 
-    // Confirmación antes de eliminar (interceptamos llamada del módulo)
     $(document).on("click", ".thumb-remove", function (e) {
+        e.preventDefault();
         e.stopPropagation();
-        if (confirm("¿Deseas eliminar esta imagen?")) {
-            $(this).closest(".thumb-item").remove();
-            togglePlaceholder();
+
+        const $item = $(this).closest(".thumb-item");
+        const imageId = $item.data("image-id");
+        const imageSrc = $item.find("img").attr("src");
+
+        if (imageId) {
+            galleryPendingDelete.push({ id: imageId, src: imageSrc });
+            $form.append(`<input type="hidden" name="delete_images[]" value="${imageId}">`);
         }
+
+        $item.remove();
+        togglePlaceholder();
     });
 
-    // Botón Guardar (solo UI por ahora)
-    $("#btnSaveGallery").on("click", function () {
-        alert("Cambios guardados (UI). Integración backend pendiente.");
+    $form.on("submit", function (e) {
+        e.preventDefault();
+
+        const newImagesCount = $("#galleryInput")[0].files.length;
+        const deletedCount = galleryPendingDelete.length;
+
+        let previewHTML = "";
+
+        if (deletedCount > 0) {
+            previewHTML += `<div style="margin-bottom:10px;">
+                <strong>Imágenes a eliminar (${deletedCount}):</strong><br>
+                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:6px;">`;
+
+            galleryPendingDelete.forEach(img => {
+                previewHTML += `<img src="${img.src}" style="width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #ddd;">`;
+            });
+
+            previewHTML += `</div></div>`;
+        }
+
+        if (newImagesCount > 0) {
+            previewHTML += `<div style="margin-top:10px;">
+                <strong>Imágenes nuevas a subir: ${newImagesCount}</strong>
+            </div>`;
+        }
+
+        Swal.fire({
+            title: 'Confirmar cambios',
+            html: previewHTML || 'No se han detectado cambios, ¿deseas continuar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Guardar cambios',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true,
+            width: 500
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $form.off('submit');
+                $form.submit();
+            }
+        });
     });
 
-    // Mostrar estado inicial
     togglePlaceholder();
 });

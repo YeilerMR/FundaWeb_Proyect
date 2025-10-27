@@ -6,11 +6,11 @@ const TagsModule = (() => {
         const type = opts.type;
         const max = Number(opts.max) || 5;
 
+        let values = [];
+
         const $input = $('<input type="text" autocomplete="off">');
         const $hint = $('<div class="hint d-none"></div>');
         $wrapper.append($input, $hint);
-
-        const values = [];
 
         const validators = {
             phone: v => /^[+\d][\d\s().-]{6,20}$/.test(v),
@@ -30,13 +30,21 @@ const TagsModule = (() => {
             const v = String(raw || "").trim();
             if (!v) return;
 
-            if (values.includes(v.toLowerCase())) { showError("Ya existe."); return; }
-            if (values.length >= max) { showError(`Máximo ${max}.`); return; }
-
+            if (values.map(x => x.toLowerCase()).includes(v.toLowerCase())) {
+                showError("Ya existe.");
+                return;
+            }
+            if (values.length >= max) {
+                showError(`Máximo ${max}.`);
+                return;
+            }
             const isValid = validators[type] ? validators[type](v) : true;
-            if (!isValid) { showError(type === "phone" ? "Teléfono inválido." : "Email inválido."); return; }
+            if (!isValid) {
+                showError(type === "phone" ? "Teléfono inválido." : "Email inválido.");
+                return;
+            }
 
-            values.push(v.toLowerCase());
+            values.push(v);
 
             const $tag = $(`
                 <span class="tag" data-value="${v}">
@@ -50,8 +58,6 @@ const TagsModule = (() => {
             $input.val("");
         }
 
-        $wrapper.on("click", () => $input.trigger("focus"));
-
         $input.on("keydown", function (e) {
             if (e.key === "Enter") {
                 e.preventDefault();
@@ -61,20 +67,48 @@ const TagsModule = (() => {
             }
         });
 
+        $input.on("blur", function () {
+            add($input.val());
+        });
+
+        $wrapper.on("click", () => $input.trigger("focus"));
+
         $wrapper.on("click", ".remove", function () {
             const $tag = $(this).closest(".tag");
-            const val = $tag.data("value").toLowerCase();
-            const idx = values.indexOf(val);
-            if (idx >= 0) values.splice(idx, 1);
+            const val = $tag.data("value");
+            values = values.filter(x => x !== val);
             $tag.remove();
         });
 
-        return {
-            add,
-            getAll: () => [...values]
-        };
+        function setValues(arr = []) {
+            values = [];
+            $wrapper.find(".tag").remove();
+            arr.forEach(add);
+        }
+
+        function getValues() {
+            return [...values];
+        }
+
+        return { setValues, getValues };
     }
 
-    return { create };
+    function getValues($wrapper) {
+        if (!$wrapper.data("instance")) return [];
+        return $wrapper.data("instance").getValues();
+    }
+
+    function setValues($wrapper, arr) {
+        if (!$wrapper.data("instance")) return;
+        $wrapper.data("instance").setValues(arr);
+    }
+
+    function createWrapperInstance($wrapper, opts) {
+        const instance = create($wrapper, opts);
+        $wrapper.data("instance", instance);
+        return instance;
+    }
+
+    return { create: createWrapperInstance, getValues, setValues };
 
 })();

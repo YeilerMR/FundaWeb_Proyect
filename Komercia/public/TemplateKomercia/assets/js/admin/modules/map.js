@@ -40,17 +40,25 @@ const MapModule = (() => {
         $latInput = $(latInputSelector);
         $lngInput = $(lngInputSelector);
 
-        map = L.map(targetId, { zoomControl: true }).setView([9.9281, -84.0907], 13);
+        const valLat = parseFloat(($latInput.val() || "").toString().replace(",", "."));
+        const valLng = parseFloat(($lngInput.val() || "").toString().replace(",", "."));
+        const hasCoords = !isNaN(valLat) && !isNaN(valLng);
+
+        const start = hasCoords ? { lat: valLat, lng: valLng } : { lat: 9.9281, lng: -84.0907 };
+        const startZoom = hasCoords ? 16 : 13;
+
+        map = L.map(targetId, { zoomControl: true }).setView([start.lat, start.lng], startZoom);
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: "&copy; OpenStreetMap"
         }).addTo(map);
 
-        marker = L.marker(map.getCenter(), { draggable: true }).addTo(map);
+        marker = L.marker([start.lat, start.lng], { draggable: true }).addTo(map);
 
         marker.on("dragend", e => setLatLng(e.target.getLatLng()));
 
-        setLatLng(map.getCenter());
+        setLatLng(start);
+
         bindGeocodeButtons();
     }
 
