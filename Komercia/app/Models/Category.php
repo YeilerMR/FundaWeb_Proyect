@@ -16,4 +16,14 @@ protected $fillable = [
         'dsc_imagen'
     ];
 
+    // Relacion 1 a N con comercios
+
+    public function commerces(){
+        return $this->belongsToMany(
+            Commerce::class,
+            'tsim_comercio_categoria',
+            'id_categoria',
+            'id_comercio'
+        );
+    }
 }

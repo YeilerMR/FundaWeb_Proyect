@@ -14,13 +14,7 @@
 
         <div class="row g-4">
             @forelse ($shops as $shop)
-                
-            @empty
-                <div class="col-12 text-center">
-                    <p>No Hay Comercios Registrados aun.</p>
-                </div>
-            @endforelse
-            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{$loop->index * 100 + 100 }}">
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{$loop->index * 100 + 100 }}">
                 <div class="comercio-card">
                     <div class="comercio-image">
                         <img src="{{asset($shop->dsc_imagen_destacada ?? 'img/komercia-logo.svg')}}"
@@ -28,11 +22,10 @@
                     </div>
                     <div class="comercio-body">
                         <div class="comercio-category">
-                            <span>Restaurante</span>
+                            <span>{{ $shop->categories->first()->dsc_nombre ?? 'Sin Categoria'}}</span>
                         </div>
-                        <h3 class="comercio-title">Restaurante Crickesio</h3>
-                        <p class="comercio-description">Cocina gourmet con ingredientes locales y ambiente
-                            acogedor</p>
+                        <h3 class="comercio-title">{{$shop->dsc_nombre}}</h3>
+                        <p class="comercio-description">{{ Str::limit($shop->dsc_descripcion, 100)}}</p>
                         <a href="#" class="btn btn-comercio w-100">
                             Ver Detalles
                             <i class="bi bi-arrow-right ms-2"></i>
@@ -40,48 +33,12 @@
                     </div>
                 </div>
             </div>
-
-            {{-- <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="comercio-card">
-                    <div class="comercio-image">
-                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"
-                            alt="Hotel El Cricko">
-                    </div>
-                    <div class="comercio-body">
-                        <div class="comercio-category">
-                            <span>Hotel</span>
-                        </div>
-                        <h3 class="comercio-title">Hotel El Cricko</h3>
-                        <p class="comercio-description">Hospedaje de lujo con todas las comodidades para tu
-                            estadía</p>
-                        <a href="#" class="btn btn-comercio w-100">
-                            Ver Detalles
-                            <i class="bi bi-arrow-right ms-2"></i>
-                        </a>
-                    </div>
+            @empty
+                <div class="col-12 text-center">
+                    <p>No Hay Comercios Registrados aun.</p>
                 </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
-                <div class="comercio-card">
-                    <div class="comercio-image">
-                        <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=800"
-                            alt="Zapatería La Martha">
-                    </div>
-                    <div class="comercio-body">
-                        <div class="comercio-category">
-                            <span>Zapatería</span>
-                        </div>
-                        <h3 class="comercio-title">Zapatería La Martha</h3>
-                        <p class="comercio-description">Calzado de calidad para toda la familia a precios
-                            accesibles</p>
-                        <a href="#" class="btn btn-comercio w-100">
-                            Ver Detalles
-                            <i class="bi bi-arrow-right ms-2"></i>
-                        </a>
-                    </div>
-                </div>
-            </div> --}}
+            @endforelse
+            
         </div>
     </div>
 </section>

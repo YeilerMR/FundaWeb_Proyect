@@ -22,4 +22,14 @@ class Commerce extends Model
         'fec_creacion',
         'fec_modificacion'
     ];
+
+    // Relacion 1 a N con categorias
+    public function categories(){
+        return $this->belongsToMany(
+            Category::class,
+            'tsim_comercio_categoria',
+            'id_categoria',
+            'id_comercio'
+        );
+    }
 }
