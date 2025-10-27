@@ -70,7 +70,8 @@
                                             <i class="bi bi-pencil"></i>
                                         </a>
 
-                                        <a href="#" class="btn-action gallery" title="Galería de imágenes">
+                                        <a href="{{ route('admin.product.gallery', $product->id_producto) }}"
+                                            class="btn-action gallery" title="Galería de imágenes">
                                             <i class="bi bi-images"></i>
                                         </a>
 

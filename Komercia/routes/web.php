@@ -21,7 +21,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('slider', SliderController::class)->names('slider');
     // COMERCIOS
     Route::resource('commerce', CommerceController::class)->names('commerce');
-    // Galería de Comercios
+    // GALERÍA DE COMERCIOS
     Route::get('commerce/{commerce}/gallery', [CommerceController::class, 'gallery'])
         ->name('commerce.gallery');
     Route::post('commerce/{commerce}/gallery', [CommerceController::class, 'galleryStore'])
@@ -37,6 +37,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('product', ProductController::class)
         ->only(['edit', 'update', 'destroy'])
         ->names('product');
+    // GALERÍA DE PRODUCTOS
+    Route::get('product/{product}/gallery', [ProductController::class, 'gallery'])
+        ->name('product.gallery');
+    Route::post('product/{product}/gallery', [ProductController::class, 'galleryStore'])
+        ->name('product.gallery.store');
     // CATEGORÍAS
     Route::resource('category', ControllerCategory::class)->names('category');
 });

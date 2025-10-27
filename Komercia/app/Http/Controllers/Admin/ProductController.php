@@ -158,7 +158,7 @@ class ProductController extends Controller
             foreach ($request->file('images') as $file) {
                 $path = ImageService::upload(
                     $file,
-                    "commerces/{$product->id_comercio}/products/{$product->id_producto}"
+                    "commerces/{$product->id_comercio}/products/{$product->id_producto}/gallery"
                 );
 
                 ProductImage::create([
