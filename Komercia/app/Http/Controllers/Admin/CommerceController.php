@@ -144,22 +144,19 @@ class CommerceController extends Controller
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
-        /* ===============================
-        1. ELIMINAR IMÁGENES MARCADAS
-    ================================= */
+        // 1. ELIMINAR IMÁGENES MARCADAS
         if ($request->has('delete_images')) {
             foreach ($request->delete_images as $imageId) {
                 $image = CommerceImage::find($imageId);
                 if ($image) {
-                    ImageService::delete($image->dsc_url); // elimina del storage
-                    $image->delete();                     // elimina de BD
+                    ImageService::delete($image->dsc_url);
+                    $image->delete();
                 }
             }
         }
 
-        /* ===============================
-        2. SUBIR NUEVAS IMÁGENES
-    ================================= */
+        // 2. SUBIR NUEVAS IMÁGENES
+
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
                 $path = ImageService::upload($file, "commerces/{$commerce->id_comercio}/gallery");

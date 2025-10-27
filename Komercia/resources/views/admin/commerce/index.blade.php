@@ -73,8 +73,8 @@
                                             class="btn-action gallery" title="Galería">
                                             <i class="bi bi-images"></i>
                                         </a>
-                                        <a href="/admin/productos/productos.html" class="btn-action products"
-                                            title="Productos">
+                                        <a href="{{ route('admin.commerce.products.index', $commerce->id_comercio) }}"
+                                            class="btn-action products" title="Productos">
                                             <i class="bi bi-basket2"></i>
                                         </a>
                                         <form action="{{ route('admin.commerce.destroy', $commerce->id_comercio) }}"
