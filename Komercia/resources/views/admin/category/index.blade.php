@@ -2,12 +2,14 @@
 
 @section('title', 'Gestión de Categorías | Komercia')
 
+@section('menu_category', 'active')
+
 @push('styles')
     <link rel="stylesheet" href="{{ asset('TemplateKomercia/assets/css/admin/table.css') }}">
 @endpush
 
 @section('content')
-        <div class="container py-3 py-md-4">
+        <div class="container-fluid py-3 py-md-4">
 
             <div class="card-surface p-3 p-md-4">
 

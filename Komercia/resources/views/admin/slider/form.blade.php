@@ -61,7 +61,8 @@
                         <div class="form-group">
                             <label for="dsc_subtitulo" class="form-label">Subtítulo (máx. 50 caracteres)</label>
                             <input type="text" id="dsc_subtitulo" name="dsc_subtitulo" class="form-control"
-                                maxlength="50" value="{{ old('dsc_subtitulo', $slider->dsc_descripcion ?? '') }}">
+                                maxlength="50" value="{{ old('dsc_subtitulo', $slider->dsc_descripcion ?? '') }}" required>
+                            <div class="invalid-feedback">El subtítulo es obligatorio.</div>
                         </div>
                     </div>
 
@@ -71,7 +72,8 @@
                             <label for="dsc_enlace" class="form-label">Enlace</label>
                             <input type="url" id="dsc_enlace" name="dsc_enlace" class="form-control"
                                 value="{{ old('dsc_enlace', $slider->dsc_enlace ?? '') }}"
-                                placeholder="https://ejemplo.com">
+                                placeholder="https://ejemplo.com" required>
+                            <div class="invalid-feedback">El Enlace de interés es obligatorio.</div>
                         </div>
                     </div>
 

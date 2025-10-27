@@ -16,10 +16,12 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center gap-2">
                     <li class="nav-item">
-                        <a href="{{ route('landing.home') }}" class="nav-link active">Inicio</a>
+                        <a href="{{ route('landing.home') }}" 
+                        class="nav-link {{ request()->routeIs('landing.home') ? 'active' : ''}}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Comercios</a>
+                        <a href="{{route('landing.commerces')}}" 
+                        class="nav-link {{ request()->routeIs('landing.commerces') ? 'active' : ''}}">Comercios</a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="btn btn-primary-custom">Ingresar</a>
