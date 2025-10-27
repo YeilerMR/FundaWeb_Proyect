@@ -6,4 +6,8 @@
     @include('landing.partials.hero', ['sliders' => $sliders])
 
     {{-- luego más secciones aquí --}}
+    @include('landing.partials.search')
+    @include('landing.partials.recent', ['shops' => $shops])
+    @include('landing.partials.category-explore', ['categories' => $categories])
+    
 @endsection
