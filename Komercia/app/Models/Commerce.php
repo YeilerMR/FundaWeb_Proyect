@@ -28,16 +28,6 @@ class Commerce extends Model
         return $this->hasMany(CommerceImage::class, 'id_comercio', 'id_comercio');
     }
 
-    public function categories()
-    {
-        return $this->belongsToMany(
-            Category::class,
-            'tsim_comercio_categoria',
-            'id_comercio',
-            'id_categoria'
-        );
-    }
-
     public function phones()
     {
         return $this->hasMany(PhoneCommerce::class, 'id_comercio', 'id_comercio');
@@ -46,5 +36,14 @@ class Commerce extends Model
     public function emails()
     {
         return $this->hasMany(EmailCommerce::class, 'id_comercio', 'id_comercio');
+    }
+    // Relacion 1 a N con categorias
+    public function categories(){
+        return $this->belongsToMany(
+            Category::class,
+            'tsim_comercio_categoria',
+            'id_categoria',
+            'id_comercio'
+        );
     }
 }

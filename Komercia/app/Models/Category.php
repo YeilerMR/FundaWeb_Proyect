@@ -16,6 +16,8 @@ class Category extends Model
         'dsc_imagen'
     ];
 
+    // Relacion 1 a N con comercios
+
     public function commerces(){
         return $this->belongsToMany(
             Commerce::class,
