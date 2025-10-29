@@ -26,6 +26,11 @@ class User extends Authenticatable
         'fec_modificacion',
     ];
 
+    protected $table = "tsit_usuario";
+    protected $primaryKey = "id_usuario";
+
+    public $timestamps = false;
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -35,6 +40,8 @@ class User extends Authenticatable
         'dsc_contrasenha',
     ];
 
+
+    
     /**
      * Get the attributes that should be cast.
      *
