@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Category;
+use App\Models\Commerce;
+use App\Models\Slider;
 
 class UserController extends Controller
 {
@@ -61,4 +65,33 @@ class UserController extends Controller
     {
         //
     }
+
+
+public function login(Request $request)
+{
+    $request->validate([
+        'username' => 'required',
+        'password' => 'required',
+    ]);
+
+    $usuario = User::where('dsc_username', $request->username)->first();
+
+    if ($usuario && Hash::check($request->password, $usuario->dsc_contrasenha)) {
+       //ME FALTA VARIABLES DE SESION
+        //session()->put('usuario_id', $usuario->id_usuario);
+        //session()->put('rol', $usuario->id_rol);
+        //session()->put('usuario', $usuario->dsc_username);
+
+       $sliders = Slider::orderBy('id_slider', 'desc')->get();
+        $shops = Commerce::with('categories')
+        ->orderBy('id_comercio', 'desc')
+        ->take(3)
+        ->get();
+        $categories = Category::withCount('commerces')->get();
+        
+        return view('landing.index', compact('sliders', 'shops', 'categories'));
+    }
+
+    return back()->withErrors(['password' => 'Usuario o contraseña incorrecta']);
+}
 }

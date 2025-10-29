@@ -9,11 +9,12 @@
     </div>
 
     <!-- Form -->
-    <form class="needs-validation" novalidate>
+    <form action="{{ route('login.attempt') }}" method="POST" class="needs-validation" novalidate>
+        @csrf
         <div class="mb-3">
             <label for="email" class="form-label">Correo electrónico</label>
-            <input type="email" id="email" name="email" class="form-control" placeholder="tu@email.com" required>
-            <div class="invalid-feedback">Ingresa un correo válido.</div>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Ejm: NoobMaster34" required>
+            <div class="invalid-feedback">Ingresa un usuario válido.</div>
         </div>
 
         <div class="mb-3">

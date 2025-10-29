@@ -13,6 +13,7 @@ Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/comercios', [LandingController::class, 'commerces'])->name('landing.commerces');
 Route::get('/comercios/categoria/{id}', [LandingController::class, 'commercesByCategory'])->name('landing.commerces.category');
  Route::resource('login', UserController::class);
+ Route::post('/login', [UserController::class, 'login'])->name('login.attempt');
 
 
 // PANEL ADMINISTRATIVOF
