@@ -6,13 +6,13 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\CommerceController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ControllerCategory;
-
+use App\Http\Controllers\UserController;
 
 // RUTAS PÚBLICAS
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/comercios', [LandingController::class, 'commerces'])->name('landing.commerces');
 Route::get('/comercios/categoria/{id}', [LandingController::class, 'commercesByCategory'])->name('landing.commerces.category');
-
+ Route::resource('login', UserController::class);
 
 
 // PANEL ADMINISTRATIVOF
