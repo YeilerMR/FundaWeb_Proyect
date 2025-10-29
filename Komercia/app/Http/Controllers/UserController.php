@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function create()
     {
-         return view('landing.Login.form');
+
     }
 
     /**
@@ -28,19 +28,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
-    // Crear usuario (el hashing se hace automáticamente por el cast)
-    $usuario = User::create([
-        'dsc_username'      => $request->dsc_username,
-        'dsc_correo'        => $request->dsc_correo,
-        'dsc_contrasenha'   => $request->dsc_contrasenha,  // <- Hasheado automáticamente
-        'id_rol'            => 2, // Si tienes rol por defecto, ajústalo
-        'fec_creacion'      => now(),
-        'fec_modificacion'  => now(),
-    ]);
-
-    // Redirección con mensaje
-    return redirect() ->route('landing.login.form')->with('success', 'Usuario creado exitosamente.');
     }
 
     /**
