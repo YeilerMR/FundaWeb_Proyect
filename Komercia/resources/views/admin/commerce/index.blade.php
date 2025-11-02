@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Gestión de Slider | Komercia')
+@section('title', 'Gestión de Comercios | Komercia')
 
 @section('menu_commerce', 'active')
 
