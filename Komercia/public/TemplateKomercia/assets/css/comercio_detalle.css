@@ -105,6 +105,91 @@
     min-height: 350px;
 }
 
+/* ===== COMERCIO CARD ===== */
+.comercio-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.comercio-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.comercio-image {
+    position: relative;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    background: var(--background);
+}
+
+.comercio-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.comercio-card:hover .comercio-image img {
+    transform: scale(1.1);
+}
+
+.comercio-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex-grow: 1;
+}
+
+.comercio-category {
+    font-size: 0.875rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.comercio-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.comercio-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    flex-grow: 1;
+}
+
+.btn-comercio {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-comercio:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
 /* ===== PRODUCT CARDS ===== */
 .product-card {
     background: var(--surface);
@@ -262,9 +347,19 @@
     border-radius: var(--radius-lg);
     padding: 1.5rem;
     box-shadow: var(--shadow-sm);
-    position: sticky;
     top: 100px;
-    height: 100%;
+    height: auto;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.sidebar-card::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-card::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 10px;
 }
 
 .sidebar-title {
@@ -482,6 +577,8 @@
 
     .sidebar-card {
         position: static;
+        height: auto;
+        max-height: none;
         margin-bottom: 2rem;
     }
 }
@@ -536,6 +633,10 @@
         width: 40px;
         height: 40px;
         font-size: 1rem;
+    }
+
+    .comercio-image {
+        aspect-ratio: 4/3;
     }
 
     .product-image,
