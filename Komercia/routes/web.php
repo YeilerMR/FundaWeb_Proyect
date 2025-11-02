@@ -12,7 +12,12 @@ use App\Http\Controllers\Admin\ControllerCategory;
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/comercios', [LandingController::class, 'commerces'])->name('landing.commerces');
 Route::get('/comercios/categoria/{id}', [LandingController::class, 'commercesByCategory'])->name('landing.commerces.category');
+Route::get('/comercio/{id}', [LandingController::class, 'showCommerce'])->name('landing.commerce.show');
+Route::get('/comercio/{id}/productos', [LandingController::class, 'showProducts'])->name('landing.commerce.products');
+Route::get('/comercio/{id}/galeria', [LandingController::class, 'showGallery'])->name('landing.commerce.gallery');
 
+Route::get('/comercio/{id}/contacto', [LandingController::class, 'showContact'])->name('landing.commerce.contact');
+Route::post('/comercio/{id}/contacto', [LandingController::class, 'sendContact'])->name('landing.commerce.contact.send');
 
 
 // PANEL ADMINISTRATIVOF
