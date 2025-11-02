@@ -27,7 +27,7 @@
 
     @include('landing.partials.header')
 
-    <main style="margin-top: 76px;">
+    <main style="margin-top: 96px;">
         @yield('content')
     </main>
 
