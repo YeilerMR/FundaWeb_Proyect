@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\ControllerCategory;
 Route::get('/', [LandingController::class, 'index'])->name('landing.home');
 Route::get('/comercios', [LandingController::class, 'commerces'])->name('landing.commerces');
 Route::get('/comercios/categoria/{id}', [LandingController::class, 'commercesByCategory'])->name('landing.commerces.category');
-
+Route::get('/search', [LandingController::class, 'search'])->name('landing.search');
 
 
 // PANEL ADMINISTRATIVOF
