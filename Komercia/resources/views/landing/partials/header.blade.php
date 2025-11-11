@@ -16,15 +16,26 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center gap-2">
                     <li class="nav-item">
-                        <a href="{{ route('landing.home') }}" 
-                        class="nav-link {{ request()->routeIs('landing.home') ? 'active' : ''}}">Inicio</a>
+                        <a href="{{ route('landing.home') }}"
+                            class="nav-link {{ request()->routeIs('landing.home') ? 'active' : '' }}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{route('landing.commerces')}}" 
-                        class="nav-link {{ request()->routeIs('landing.commerces') ? 'active' : ''}}">Comercios</a>
+                        <a href="{{ route('landing.commerces') }}"
+                            class="nav-link {{ request()->routeIs('landing.commerces') ? 'active' : '' }}">Comercios</a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="btn btn-primary-custom">Ingresar</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <form action="{{ route('logout') }}" method="POST" class="w-100">
+                            @csrf
+                            <button type="submit"
+                                class="btn btn-primary-custom w-100 d-flex align-items-center justify-content-center gap-2">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Cerrar sesión</span>
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>
