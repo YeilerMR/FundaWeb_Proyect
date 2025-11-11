@@ -151,14 +151,21 @@
 
                 <div class="col-md-5" data-aos="fade-up" data-aos-delay="600">
                     @if ($commerce->dsc_latitud && $commerce->dsc_longitud)
-                        <div class="map-container">
+                        <div class="map-container mb-3">
                             <iframe width="100%" height="350" frameborder="0" style="border:0; border-radius: 12px;"
                                 src="https://www.openstreetmap.org/export/embed.html?bbox={{ $commerce->dsc_longitud - 0.002 }},{{ $commerce->dsc_latitud - 0.001 }},{{ $commerce->dsc_longitud + 0.002 }},{{ $commerce->dsc_latitud + 0.001 }}&layer=mapnik&marker={{ $commerce->dsc_latitud }},{{ $commerce->dsc_longitud }}"
-                                allowfullscreen loading="lazy"></iframe>
+                                allowfullscreen loading="lazy">
+                            </iframe>
                         </div>
-                    @else
-                        <p class="text-muted">Ubicación no disponible.</p>
+
+                        <div class="text-center">
+                            <a href="https://www.google.com/maps/dir/?api=1&destination={{ $commerce->dsc_latitud }},{{ $commerce->dsc_longitud }}"
+                                target="_blank" rel="noopener" class="btn-map">
+                                <i class="bi bi-geo-alt-fill me-2"></i> ¿Cómo llegar?
+                            </a>
+                        </div>
                     @endif
+
                 </div>
             </div>
         </div>
