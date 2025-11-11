@@ -4,7 +4,7 @@
             <div class="search-wrapper">
                 <i class="bi bi-search search-icon-left"></i>
                 <input type="text" name="q" id="site-search-input" class="form-control search-input"
-                    placeholder="Buscar comercios, productos o servicios..." autocomplete="off" value="{{ $q ?? '' }}">
+                    placeholder="Buscar comercios, productos o servicios..." autocomplete="off" value="{{ request('q') }}">
                 <button class="btn btn-search" type="submit" id="site-search-button">
                     <i class="bi bi-arrow-right"></i>
                 </button>
