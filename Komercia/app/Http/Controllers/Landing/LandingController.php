@@ -129,7 +129,7 @@ class LandingController extends Controller
         foreach ($emails as $email) {
             $brevo->sendContactEmail($email, $commerce->dsc_nombre, $data);
         }
-        return back()->with('success', 'Tu mensaje ha sido enviado con exito!');
+        return redirect()->route('landing.commerce.contact', $id)->with('success', 'Tu mensaje ha sido enviado con éxito!');
     }
 
     public function search(Request $request)
