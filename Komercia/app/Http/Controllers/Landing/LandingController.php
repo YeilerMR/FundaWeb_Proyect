@@ -76,6 +76,14 @@ class LandingController extends Controller
         return view('landing.commerce-gallery', compact('commerce', 'category', 'images'));
     }
 
+    public function showProduct($id)
+    {
+        $product = Product::with(['commerce', 'images'])->findOrFail($id);
+        $commerce = $product->commerce;
+
+        return view('landing.product-detail', compact('product', 'commerce'));
+    }
+
     public function showContact($id)
     {
         $commerce = Commerce::with('categories')->findOrFail($id);

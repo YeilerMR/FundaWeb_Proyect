@@ -19,61 +19,69 @@ $(document).ready(function () {
         mirror: false
     });
 
-    // OBTENER DATA DEL SLIDER DESDE BLADE
-    const heroSlidesData = JSON.parse($('#heroSlickData').attr('data-slides'));
+    // ---------------------------
+    // HERO SLIDER (solo si existe)
+    // ---------------------------
+    const heroDataElement = $('#heroSlickData');
+    if (heroDataElement.length > 0) {
+        try {
+            const heroSlidesData = JSON.parse(heroDataElement.attr('data-slides') || '[]');
 
-    // PRE-CARGA DE IMÁGENES
-    heroSlidesData.forEach(slide => {
-        const img = new Image();
-        img.src = slide.imagen;
-    });
+            if (heroSlidesData.length > 0) {
+                // Pre-carga de imágenes
+                heroSlidesData.forEach(slide => {
+                    const img = new Image();
+                    img.src = slide.imagen;
+                });
 
-    // INICIALIZAR SLICK
-    $('.hero-slick').slick({
-        dots: true,
-        infinite: true,
-        speed: 1200,
-        fade: true,
-        cssEase: 'ease-in-out',
-        autoplay: true,
-        autoplaySpeed: 5000,
-        pauseOnHover: false,
-        pauseOnFocus: false,
-        prevArrow: $('.hero-arrow.left'),
-        nextArrow: $('.hero-arrow.right')
-    });
+                // Inicializar Slick solo si existe el contenedor
+                if ($('.hero-slick').length > 0 && $.fn.slick) {
+                    $('.hero-slick').slick({
+                        dots: true,
+                        infinite: true,
+                        speed: 1200,
+                        fade: true,
+                        cssEase: 'ease-in-out',
+                        autoplay: true,
+                        autoplaySpeed: 5000,
+                        pauseOnHover: false,
+                        pauseOnFocus: false,
+                        prevArrow: $('.hero-arrow.left'),
+                        nextArrow: $('.hero-arrow.right')
+                    });
 
-    // ACTUALIZAR FONDO Y TEXTO 
-    function updateHeroContent(index) {
-        const slide = heroSlidesData[index];
+                    // Función para actualizar contenido
+                    function updateHeroContent(index) {
+                        const slide = heroSlidesData[index];
+                        $('.hero-section').css({
+                            backgroundImage: `url(${slide.imagen})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                        });
+                        $('.hero-content').removeClass('show');
+                        setTimeout(() => {
+                            $('.hero-title').text(slide.titulo);
+                            $('.hero-subtitle').text(slide.subtitulo);
+                            $('.btn-slider').attr('href', slide.enlace ?? '#');
+                            $('.hero-content').addClass('show');
+                        }, 300);
+                    }
 
-        // Fondo del contenedor global
-        $('.hero-section').css({
-            backgroundImage: `url(${slide.imagen})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-        });
-
-        // Animación del texto
-        $('.hero-content').removeClass('show');
-
-        setTimeout(() => {
-            $('.hero-title').text(slide.titulo);
-            $('.hero-subtitle').text(slide.subtitulo);
-            $('.btn-slider').attr('href', slide.enlace ?? '#');
-            $('.hero-content').addClass('show');
-        }, 300);
+                    // Primer slide y evento de cambio
+                    updateHeroContent(0);
+                    $('.hero-slick').on('afterChange', function (event, slick, currentSlide) {
+                        updateHeroContent(currentSlide);
+                    });
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ Error al parsear heroSlidesData:', error);
+        }
     }
 
-    // Primer slide
-    updateHeroContent(0);
-
-    // Cuando cambia slick
-    $('.hero-slick').on('afterChange', function (event, slick, currentSlide) {
-        updateHeroContent(currentSlide);
-    });
-
-    // Fancybox (por si se usa luego)
+    // ---------------------------
+    // Fancybox (solo si existe)
+    // ---------------------------
     if (window.Fancybox) {
         Fancybox.bind('[data-fancybox="galeria"]', {
             Thumbs: { autoStart: true },
