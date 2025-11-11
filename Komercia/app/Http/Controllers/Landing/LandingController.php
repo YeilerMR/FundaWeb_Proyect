@@ -51,7 +51,7 @@ class LandingController extends Controller
 
     public function showCommerce($id)
     {
-        $commerce = Commerce::with('categories')->findOrFail($id);
+        $commerce = Commerce::with(['categories', 'emails', 'phones'])->findOrFail($id);
         $category = $commerce->categories->first();
 
         return view('landing.commerce-detail', compact('commerce', 'category'));
