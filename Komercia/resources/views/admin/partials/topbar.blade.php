@@ -5,6 +5,8 @@
     </button>
 
     <div class="d-flex align-items-center gap-2">
-        <div class="user-avatar" id="userInitials"></div>
+        <div class="user-avatar" id="userInitials">
+            {{ strtoupper(substr(Auth::user()->dsc_username ?? 'Usuario', 0, 1)) }}
+        </div>
     </div>
 </header>
