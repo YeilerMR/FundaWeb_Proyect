@@ -17,6 +17,7 @@ Route::get('/comercios/categoria/{id}', [LandingController::class, 'commercesByC
 Route::get('/producto/{id}', [LandingController::class, 'showProduct'])->name('landing.product.show');
 Route::get('/comercio/{id}', [LandingController::class, 'showCommerce'])->name('landing.commerce.show');
 
+Route::get('/search', [LandingController::class, 'search'])->name('landing.search');
 
 // --------------------------------------------------------------------------
 // AUTENTICACIÓN (SOLO PARA ADMINISTRADORES)

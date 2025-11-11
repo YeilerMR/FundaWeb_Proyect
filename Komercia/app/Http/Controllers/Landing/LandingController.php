@@ -49,78 +49,36 @@ class LandingController extends Controller
         return view('landing.commerces', compact('categories', 'commerces', 'selectedCategory', 'totalCommerces'));
     }
 
-    public function showCommerce($id)
+    public function search(Request $request)
     {
-        $commerce = Commerce::with('categories')->findOrFail($id);
-        $category = $commerce->categories->first();
+        $q = trim($request->get('q', ''));
 
-        return view('landing.commerce-detail', compact('commerce', 'category'));
-    }
+        if ($q === '') {
+            $commerces = Commerce::with('categories')->latest('id_comercio')->get();
+            $products = collect();
+        } else {
+            $term = "%{$q}%";
 
-    public function showProducts($id)
-    {
-        $commerce = Commerce::with('categories')->findOrFail($id);
-        $category = $commerce->categories->first();
-        $products = Product::where('id_comercio', $id)->get();
-        //$products = Product::where('id_comercio', $id)->get();
+            $commerces = Commerce::with('categories')
+                ->where('dsc_nombre', 'like', $term)
+                ->orWhere('dsc_descripcion', 'like', $term)
+                ->get();
 
-        return view('landing.commerce-products', compact('commerce', 'category', 'products'));
-    }
-
-    public function showGallery($id)
-    {
-        $commerce = Commerce::with('categories')->findOrFail($id);
-        $category = $commerce->categories->first();
-        $images = CommerceImage::where('id_comercio', $id)->get();
-
-        return view('landing.commerce-gallery', compact('commerce', 'category', 'images'));
-    }
-
-    public function showContact($id)
-    {
-        $commerce = Commerce::with('categories')->findOrFail($id);
-        $category = $commerce->categories->first();
-        return view('landing.commerce-contact', compact('commerce', 'category'));
-    }
-
-    public function sendContact(Request $request, $id)
-    {
-        //Validacion
-        $validator = Validator::make($request->all(), [
-            'dsc_nombre' => 'required|string|max:100',
-            'dsc_telefono' => 'required|string|max:20',
-            'dsc_correo' => 'required|email|max:100',
-            'dsc_mensaje' => 'required|string|max:1000',
-        ]);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+            $products = Product::with('commerce')
+                ->where('dsc_nombre', 'like', $term)
+                ->orWhere('dsc_descripcion', 'like', $term)
+                ->get();
         }
 
-        $commerce = Commerce::findOrFail($id);
-        $emails = EmailCommerce::where('id_comercio', $id)->pluck('dsc_correo')->toArray();
+        $totalCommerces = $commerces->count();
+        $totalProducts = $products->count();
 
-        if (empty($emails)) {
-            return back()->withErrors(['correo' => 'Este comercio no tiene correo registrado.'])->withInput();
-        }
-
-        ContactMessage::create([
-            'id_comercio' => $id,
-            'dsc_nombre' => $request->dsc_nombre,
-            'dsc_telefono' => $request->dsc_telefono,
-            'dsc_correo' => $request->dsc_correo,
-            'dsc_mensaje' => $request->dsc_mensaje,
-            'fec_envio' => now()->format('Y-m-d H:i:s'),
-        ]);
-
-        //Enviar correo con brevo
-        $data = $request->only(['dsc_nombre', 'dsc_telefono', 'dsc_correo', 'dsc_mensaje']);
-        $data['commerce_name'] = $commerce->dsc_nombre;
-        
-        $brevo = new BrevoService();
-        foreach ($emails as $email) {
-            $brevo->sendContactEmail($email, $commerce->dsc_nombre, $data);
-        }
-        return back()->with('success', 'Tu mensaje ha sido enviado con exito!');
+        return view('landing.search_results', compact(
+            'commerces',
+            'totalCommerces',
+            'totalProducts',
+            'products',
+            'q'
+        ));
     }
 }
