@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Landing\LandingController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\CommerceController;
@@ -9,29 +8,19 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ControllerCategory;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-//para crear usuarios quemados
-Route::get('/register-admin', [AuthenticatedSessionController::class, 'register']);
+// --------------------------------------------------------------------------
+// RUTAS PÚBLICAS (DIRECTORIO COMERCIAL LANDING PAGE)
+// --------------------------------------------------------------------------
+Route::get('/', [LandingController::class, 'index'])->name('landing.home');
+Route::get('/comercios', [LandingController::class, 'commerces'])->name('landing.commerces');
+Route::get('/comercios/categoria/{id}', [LandingController::class, 'commercesByCategory'])->name('landing.commerces.category');
+Route::get('/producto/{id}', [LandingController::class, 'showProduct'])->name('landing.product.show');
+Route::get('/comercio/{id}', [LandingController::class, 'showCommerce'])->name('landing.commerce.show');
 
 
-Route::get('/', function () {
-    if (!Auth::check()) {
-        return redirect()->route('login');
-    }
-
-    if (Auth::user()->id_rol == 1) {
-        return redirect()->route('admin.dashboard');
-    } else {
-        return redirect()->route('landing.home');
-    }
-});
-
-// RUTAS SOLO PARA CLIENTES
-Route::middleware(['auth', 'cliente'])->group(function () {
-    Route::get('/dashboard', [LandingController::class, 'index'])->name('landing.home');
-    Route::get('/comercios', [LandingController::class, 'commerces'])->name('landing.commerces');
-    Route::get('/comercios/categoria/{id}', [LandingController::class, 'commercesByCategory'])->name('landing.commerces.category');
-});
-
+// --------------------------------------------------------------------------
+// AUTENTICACIÓN (SOLO PARA ADMINISTRADORES)
+// --------------------------------------------------------------------------
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
@@ -40,7 +29,14 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-// PANEL ADMINISTRATIVOF
+// Ruta especial para crear administradores durante desarrollo
+if (app()->environment('local')) {
+    Route::get('/register-admin', [AuthenticatedSessionController::class, 'register']);
+}
+
+// --------------------------------------------------
+// RUTAS PANEL ADMINISTRATIVO (PROTEGIDO)
+// --------------------------------------------------
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
 
     // Dashboard
@@ -74,6 +70,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('category', ControllerCategory::class)->names('category');
 });
 
+
+// --------------------------------------------------
+// PREVIEW DE EMAIL (TESTING EMAIL)
+// --------------------------------------------------
 Route::get('/preview/email-contacto', function () {
     $data = [
         'commerce_name' => 'Café Aroma',

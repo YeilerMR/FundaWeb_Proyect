@@ -24,10 +24,10 @@
                             class="nav-link {{ request()->routeIs('landing.commerces') ? 'active' : '' }}">Comercios</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="btn btn-primary-custom">Ingresar</a>
+                        <a href="{{ route('login') }}" class="btn btn-primary-custom">Ingresar</a>
                     </li>
 
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <form action="{{ route('logout') }}" method="POST" class="w-100">
                             @csrf
                             <button type="submit"
@@ -36,7 +36,7 @@
                                 <span>Cerrar sesión</span>
                             </button>
                         </form>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </nav>
