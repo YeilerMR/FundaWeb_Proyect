@@ -1,23 +1,47 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Landing\LandingController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\CommerceController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ControllerCategory;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
-// RUTAS PÚBLICAS
-Route::get('/', [LandingController::class, 'index'])->name('landing.home');
-Route::get('/comercios', [LandingController::class, 'commerces'])->name('landing.commerces');
-Route::get('/comercios/categoria/{id}', [LandingController::class, 'commercesByCategory'])->name('landing.commerces.category');
- Route::resource('login', UserController::class);
- Route::post('/login', [UserController::class, 'login'])->name('login.attempt');
+//para crear usuarios quemados
+Route::get('/register-admin', [AuthenticatedSessionController::class, 'register']);
 
+
+Route::get('/', function () {
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+
+    if (Auth::user()->id_rol == 1) {
+        return redirect()->route('admin.dashboard');
+    } else {
+        return redirect()->route('landing.home');
+    }
+});
+
+// RUTAS SOLO PARA CLIENTES
+Route::middleware(['auth', 'cliente'])->group(function () {
+    Route::get('/dashboard', [LandingController::class, 'index'])->name('landing.home');
+    Route::get('/comercios', [LandingController::class, 'commerces'])->name('landing.commerces');
+    Route::get('/comercios/categoria/{id}', [LandingController::class, 'commercesByCategory'])->name('landing.commerces.category');
+});
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
+});
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');
 
 // PANEL ADMINISTRATIVOF
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
 
     // Dashboard
     Route::get('/', fn() => view('admin.dashboard.index'))->name('dashboard');

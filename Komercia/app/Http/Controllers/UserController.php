@@ -77,10 +77,7 @@ public function login(Request $request)
     $usuario = User::where('dsc_username', $request->username)->first();
 
     if ($usuario && Hash::check($request->password, $usuario->dsc_contrasenha)) {
-       //ME FALTA VARIABLES DE SESION
-        //session()->put('usuario_id', $usuario->id_usuario);
-        //session()->put('rol', $usuario->id_rol);
-        //session()->put('usuario', $usuario->dsc_username);
+      
 
        $sliders = Slider::orderBy('id_slider', 'desc')->get();
         $shops = Commerce::with('categories')

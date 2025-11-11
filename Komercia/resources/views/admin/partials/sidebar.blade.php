@@ -28,9 +28,14 @@
 
     <div class="flex-grow-1"></div>
 
-    <div class="px-3 py-3">
-        <button type="button" class="btn-logout w-100 d-flex align-items-center justify-content-center gap-2">
-            <i class="bi bi-box-arrow-right"></i> <span>Cerrar sesión</span>
-        </button>
-    </div>
+      <div class="px-3 py-3">
+                <form action="{{ route('logout') }}" method="POST" class="w-100">
+                    @csrf
+                    <button type="submit"
+                        class="btn-logout w-100 d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Cerrar sesión</span>
+                    </button>
+                </form>
+        </div>
 </aside>
