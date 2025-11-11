@@ -53,3 +53,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // CATEGORÍAS
     Route::resource('category', ControllerCategory::class)->names('category');
 });
+
+Route::get('/preview/email-contacto', function () {
+    $data = [
+        'commerce_name' => 'Café Aroma',
+        'dsc_nombre' => 'Juan Pérez',
+        'dsc_telefono' => '8888-8888',
+        'dsc_correo' => 'juanperez@mail.com',
+        'dsc_mensaje' => 'Hola, estoy interesado en conocer más sobre sus servicios.'
+    ];
+
+    return view('emails.contact-message', ['data' => $data]);
+});
