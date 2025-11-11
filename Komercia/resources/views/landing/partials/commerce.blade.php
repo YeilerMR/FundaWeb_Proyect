@@ -41,8 +41,10 @@
                                         <h3 class="comercio-title">{{ $commerce->dsc_nombre }}</h3>
                                         <p class="comercio-description">{{ Str::limit($commerce->dsc_descripcion, 80) }}
                                         </p>
-                                        <a href="#" class="btn btn-comercio w-100">
-                                            Ver Detalles <i class="bi bi-arrow-right ms-2"></i>
+                                        <a href="{{ route('landing.commerce.show', $commerce->id_comercio) }}"
+                                            class="btn btn-comercio w-100">
+                                            Ver Detalles
+                                            <i class="bi bi-arrow-right ms-2"></i>
                                         </a>
                                     </div>
                                 </div>
