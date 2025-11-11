@@ -1,7 +1,8 @@
 <footer class="footer" data-aos="fade-up">
     <div class="container">
         <div class="row gy-4 justify-content-between align-items-start">
-            <div class="col-lg-4 col-md-6">
+            
+            <div class="col-lg-5 col-md-6">
                 <div class="footer-brand d-flex align-items-center mb-3">
                     <div class="section-icon">
                         <i class="bi bi-shop"></i>
@@ -14,21 +15,12 @@
                 </p>
             </div>
 
-            <div class="col-4 col-md-3 col-lg-2">
+            <!-- Enlaces -->
+            <div class="col-6 col-md-4 col-lg-3">
                 <h6 class="footer-heading">Enlaces</h6>
                 <ul class="footer-links">
                     <li><a href="{{ route('landing.home') }}">Inicio</a></li>
-                    <li><a href="#">Comercios</a></li>
-                    <li><a href="#">Categorías</a></li>
-                </ul>
-            </div>
-
-            <div class="col-4 col-md-3 col-lg-2">
-                <h6 class="footer-heading">Soporte</h6>
-                <ul class="footer-links">
-                    <li><a href="#">Ayuda</a></li>
-                    <li><a href="#">Contacto</a></li>
-                    <li><a href="#">Términos</a></li>
+                    <li><a href="{{ route('landing.commerces') }}">Comercios</a></li>
                 </ul>
             </div>
         </div>
