@@ -94,7 +94,7 @@ class ControllerCategory extends Controller
 
         $category->update($data);
 
-        return redirect()->back()->with('success', 'Categoría actualizada correctamente.');
+        return redirect()->route('admin.category.index')->with('success', 'Categoría actualizada correctamente');
     }
 
     /**

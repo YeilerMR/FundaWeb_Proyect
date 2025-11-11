@@ -28,8 +28,9 @@
         </nav>
 
         <!-- FORM -->
-        <form id="categoriaForm" action="{{ isset($category) ? route('admin.category.update', $category) : route('admin.category.store') }}" class="needs-validation" method="POST"
-            enctype="multipart/form-data" novalidate>
+        <form id="categoriaForm"
+            action="{{ isset($category) ? route('admin.category.update', $category) : route('admin.category.store') }}"
+            class="needs-validation" method="POST" enctype="multipart/form-data" novalidate>
             @csrf
             @if (isset($category))
                 @method('PUT')
@@ -49,27 +50,26 @@
                 </div>
 
                 <!-- IMAGEN DESTACADA -->
-                <div class="form-group">
-                    <label class="form-label">Imagen Destacada *</label>
-                    <div class="featured-upload">
-                        <div class="featured-thumb" id="catThumb">
+                <div class="col-12">
+                    <div class="form-group mb-3">
+                        <label class="form-label">Imagen Destacada {{ isset($category) ? '' : '*' }}</label>
+
+                        <div class="img-thumb" id="categoryThumb">
                             @if (isset($category) && $category->dsc_imagen)
-                                <img src="{{ asset($category->dsc_imagen) }}" alt="{{ $category->dsc_nombre }}"
-                                   class="bi bi-image">
+                                <img src="{{ asset($category->dsc_imagen) }}" alt="{{ $category->dsc_nombre }}">
                             @else
                                 <i class="bi bi-image"></i>
                             @endif
                         </div>
-                        <div class="featured-input">
-                            <input class="form-control" type="file" id="catImage" name="dsc_imagen" accept="image/*"
-                                required>
-                            <small class="text-secondary">PNG/JPG, máx. 2MB</small>
-                            <div class="invalid-feedback">
-                                Selecciona una imagen para la categoría.
-                            </div>
-                        </div>
+
+                        <input class="form-control mt-2" type="file" id="categoryImage" name="dsc_imagen"
+                            accept="image/*" {{ isset($category) ? '' : 'required' }}>
+
+                        <small class="text-secondary">PNG/JPG, máx. 2MB — Ideal: 1920×600</small>
+                        <div class="invalid-feedback">La imagen destacada es obligatoria.</div>
                     </div>
                 </div>
+
             </section>
 
             <!-- ACCIONES -->

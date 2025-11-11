@@ -71,13 +71,13 @@
                         <div class="form-group">
                             <label for="dsc_enlace" class="form-label">Enlace</label>
                             <input type="url" id="dsc_enlace" name="dsc_enlace" class="form-control"
-                                value="{{ old('dsc_enlace', $slider->dsc_enlace ?? '') }}"
-                                placeholder="https://ejemplo.com" required>
+                                value="{{ old('dsc_enlace', $slider->dsc_enlace ?? '') }}" placeholder="https://ejemplo.com"
+                                required>
                             <div class="invalid-feedback">El Enlace de interés es obligatorio.</div>
                         </div>
                     </div>
 
-                    <!-- IMAGEN -->
+                    <!-- IMAGEN DEL SLIDER -->
                     <div class="col-12">
                         <div class="form-group mb-3">
                             <label class="form-label">Imagen {{ isset($slider) ? '' : '*' }}</label>
@@ -85,7 +85,7 @@
                             <div class="img-thumb" id="sliderThumb">
                                 @if (isset($slider) && $slider->dsc_imagen)
                                     <img src="{{ asset($slider->dsc_imagen) }}"
-                                        style="max-height:120px; border-radius:8px;">
+                                        alt="{{ $slider->dsc_titulo ?? 'Imagen del slider' }}">
                                 @else
                                     <i class="bi bi-image"></i>
                                 @endif
@@ -95,11 +95,10 @@
                                 accept="image/*" {{ isset($slider) ? '' : 'required' }}>
 
                             <small class="text-secondary">PNG/JPG, máx. 2MB — Ideal: 1920×600</small>
-                            <div class="invalid-feedback">
-                                Selecciona una imagen para el slider.
-                            </div>
+                            <div class="invalid-feedback">Selecciona una imagen para el slider.</div>
                         </div>
                     </div>
+
                 </div>
             </section>
 
