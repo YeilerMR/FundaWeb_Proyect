@@ -20,13 +20,14 @@ class DashboardController extends Controller
 
         // RECENT COMMERCES
         $recentCommerces = Commerce::with('categories')
-            ->orderBy('id_comercio', 'desc')
+            ->orderByDesc('id_comercio')
             ->take(5)
             ->get();
-        
-        
-            // COMMERCES BY CATEGORY        
-        $commercesByCategory = Category::withCount('commerces')->get();
+
+        // COMMERCES BY CATEGORY        
+        $commercesByCategory = Category::withCount('commerces')
+            ->orderByDesc('commerces_count')
+            ->get();
 
         return view('admin.dashboard.index', compact(
             'totalCommerces',

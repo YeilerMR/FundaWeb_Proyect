@@ -104,16 +104,42 @@
                         <h5 class="m-0 fw-semibold">Comercios por Categoría</h5>
                     </div>
 
-                    <ul class="list-unstyled m-0">
-                        @foreach ($commercesByCategory as $cat)
-                            <li class="d-flex justify-content-between border-bottom py-2">
-                                <span>{{ $cat->dsc_nombre }}</span>
-                                <span class="fw-semibold">{{ $cat->commerces_count }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
+                    @php
+                        $maxCommerces = $commercesByCategory->max('commerces_count') ?: 1;
+                        $colors = [
+                            'rgba(255,107,53,0.9)',
+                            'rgba(0,78,137,0.9)',
+                            'rgba(0,173,123,0.9)',
+                            'rgba(230,210,60,0.9)',
+                            'rgba(136,84,208,0.9)',
+                        ];
+                    @endphp
+
+                    <div class="category-list mt-3">
+                        @forelse ($commercesByCategory as $cat)
+                            @php
+                                $percentage = ($cat->commerces_count / $maxCommerces) * 100;
+                                $color = $colors[$loop->index % count($colors)];
+                            @endphp
+
+                            <div class="category-item mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="fw-semibold text-dark">{{ $cat->dsc_nombre }}</span>
+                                    <span class="fw-semibold text-secondary">{{ $cat->commerces_count }}</span>
+                                </div>
+                                <div class="progress position-relative" style="height: 10px;">
+                                    <div class="progress-bar"
+                                        style="width: {{ $percentage }}%; background-color: {{ $color }};">
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-muted mb-0">No hay categorías registradas aún.</p>
+                        @endforelse
+                    </div>
                 </section>
             </div>
+
         </div>
     </div>
 @endsection
