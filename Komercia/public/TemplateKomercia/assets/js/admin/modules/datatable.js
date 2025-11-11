@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $('table.table-custom').each(function () {
         initDataTable(this);
+        TableModule.bindImgPreview(".table-img-thumb");
     });
 });
 
