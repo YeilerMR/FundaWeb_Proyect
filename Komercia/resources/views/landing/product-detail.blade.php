@@ -67,7 +67,7 @@
                     @if ($commerce)
                         <p><strong>Comercio:</strong>
                             <a href="{{ route('landing.commerce.show', $commerce->id_comercio) }}"
-                                class="text-decoration-none">
+                                style="text-decoration: none; color: var(--primary-color);">
                                 {{ $commerce->dsc_nombre }}
                             </a>
                         </p>
