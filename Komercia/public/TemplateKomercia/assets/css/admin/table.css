@@ -94,17 +94,21 @@
 }
 
 /* ===== BUSCADOR UNIVERSAL ===== */
-.dt-container .row.mt-2.justify-content-between>.col-md-auto.ms-auto {
-    flex: 0 0 100%;
-    max-width: 100%;
+.dt-container .dt-layout-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: nowrap;
+    margin-bottom: 12px;
+}
+
+.dt-container .dt-search {
+    flex: 0 0 70%;
 }
 
 .dt-container .dt-search label {
     display: none !important;
-}
-
-.dt-container .dt-search {
-    width: 100%;
 }
 
 .dt-container .dt-search input.form-control {
@@ -124,6 +128,35 @@
 }
 
 /* ===== PAGINACIÓN UNIVERSAL ===== */
+.dt-container .dt-length {
+    flex: 0 0 30%;
+    display: flex;
+}
+
+.dt-container .dt-length,
+.dt-container .dt-search {
+    flex: 1 1 auto;
+}
+
+.dt-container .dt-length select {
+    font-size: 0.95rem;
+    border: 2px solid var(--border-color);
+    border-radius: 14px;
+    padding: 8px 14px;
+    transition: all .2s ease;
+}
+
+.dt-container .dt-search input.form-control {
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .dt-container .dt-layout-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
 .dt-container .dt-paging {
     margin-top: 16px;
     display: flex;

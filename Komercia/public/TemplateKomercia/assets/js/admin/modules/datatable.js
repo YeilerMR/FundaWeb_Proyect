@@ -17,8 +17,11 @@ function initDataTable(selector) {
         paging: true,
         searching: true,
         info: false,
-        lengthChange: false,
+        lengthChange: true,
+        pageLength: 5,
+        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Todos"]],
         language: {
+            lengthMenu: "_MENU_ registros por página",
             search: "Buscar:",
             zeroRecords: "No se encontraron resultados",
             emptyTable: "No hay registros disponibles",
@@ -28,6 +31,12 @@ function initDataTable(selector) {
                 next: "›",
                 previous: "‹"
             }
+        },
+        layout: {
+            topStart: null,
+            top: 'search',
+            topEnd: 'pageLength',
+            bottomEnd: 'paging'
         }
     });
 
@@ -36,6 +45,9 @@ function initDataTable(selector) {
 
     wrapper.find('.row.mt-2.justify-content-between > .col-md-auto.ms-auto')
         .addClass('col-12');
-
+        
+    wrapper.find('.dt-length label').contents().filter(function () {
+        return this.nodeType === 3;
+    }).remove();
     return dt;
 }
