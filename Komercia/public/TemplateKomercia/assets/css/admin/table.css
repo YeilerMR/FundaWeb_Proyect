@@ -195,6 +195,42 @@
     cursor: default;
 }
 
+/* ===== FLECHAS DE ORDENAMIENTO (DATATABLES CUSTOM) ===== */
+.table-custom thead th {
+    position: relative;
+    white-space: nowrap;
+}
+
+.table-custom thead th .dt-column-order::before {
+    content: "\2195";
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    opacity: 0.45;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.2s ease;
+}
+
+.table-custom thead th.dt-ordering-asc .dt-column-order::before {
+    content: "\2191"; 
+    color: var(--primary-color);
+    opacity: 1;
+    transform: translateY(-50%) scale(1.15);
+}
+
+.table-custom thead th.dt-ordering-desc .dt-column-order::before {
+    content: "\2193";
+    color: var(--primary-color);
+    opacity: 1;
+    transform: translateY(-50%) scale(1.15);
+}
+
+.table-custom thead th:hover .dt-column-order::before {
+    opacity: 0.8;
+}
+
 /* ===== IMAGE PREVIEW TABLE ===== */
 .thumb-preview-wrapper {
     position: absolute;
