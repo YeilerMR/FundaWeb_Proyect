@@ -46,7 +46,7 @@ class ControllerCategory extends Controller
 
         $category->save();
 
-        return back()->with('success', 'Categoría registrada correctamente.');
+        return redirect()->route('admin.category.index')->with('success', 'Categoría agregada correctamente');
     }
 
     /**

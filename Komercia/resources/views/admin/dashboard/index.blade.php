@@ -115,14 +115,14 @@
                         ];
                     @endphp
 
-                    <div class="category-list mt-3">
-                        @forelse ($commercesByCategory as $cat)
+                    <div id="categoryList" class="category-list mt-3">
+                        @forelse ($commercesByCategory as $index => $cat)
                             @php
                                 $percentage = ($cat->commerces_count / $maxCommerces) * 100;
                                 $color = $colors[$loop->index % count($colors)];
                             @endphp
 
-                            <div class="category-item mb-3">
+                            <div class="category-item mb-3 {{ $index >= 5 ? 'd-none extra-category' : '' }}">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                     <span class="fw-semibold text-dark">{{ $cat->dsc_nombre }}</span>
                                     <span class="fw-semibold text-secondary">{{ $cat->commerces_count }}</span>
@@ -137,9 +137,34 @@
                             <p class="text-muted mb-0">No hay categorías registradas aún.</p>
                         @endforelse
                     </div>
+
+                    @if ($commercesByCategory->count() > 5)
+                        <div class="text-center mt-3">
+                            <button id="toggleCategories" class="btn btn-light btn-sm rounded-pill px-3">
+                                Ver más
+                            </button>
+                        </div>
+                    @endif
                 </section>
             </div>
 
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(function() {
+            const $btn = $('#toggleCategories');
+            const $extra = $('.extra-category');
+
+            if ($btn.length) {
+                $btn.on('click', function() {
+                    const isExpanded = $btn.text() === 'Ver menos';
+                    $extra.toggleClass('d-none', isExpanded);
+                    $btn.text(isExpanded ? 'Ver más' : 'Ver menos');
+                });
+            }
+        });
+    </script>
+@endpush
