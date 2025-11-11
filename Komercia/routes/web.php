@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Landing\LandingController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\CommerceController;
@@ -44,7 +45,7 @@ if (app()->environment('local')) {
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
 
     // Dashboard
-    Route::get('/', fn() => view('admin.dashboard.index'))->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     // SLIDER
     Route::resource('slider', SliderController::class)->names('slider');
     // COMERCIOS

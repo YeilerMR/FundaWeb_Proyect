@@ -1,12 +1,9 @@
 @extends('admin.layouts.master')
 
 @section('title', 'Dashboard | Komercia')
-
-{{-- Activar item de menú --}}
 @section('menu_dashboard', 'active')
 
 @section('content')
-
     <div class="container-fluid py-3 py-md-4">
 
         <!-- Page Heading -->
@@ -14,15 +11,14 @@
             <h1 class="h3 m-0 text-dark-emphasis page-title">Dashboard</h1>
         </div>
 
-        <!-- Row 1: (stats) -->
+        <!-- Row 1: Estadísticas -->
         <div class="row g-3 g-md-4">
-
             <!-- Comercios -->
             <div class="col-12 col-sm-6 col-lg-3">
                 <section class="card-surface d-flex justify-content-between align-items-start">
                     <div>
                         <p class="stat-title">Comercios</p>
-                        <h2 class="stat-value">156</h2>
+                        <h2 class="stat-value">{{ $totalCommerces }}</h2>
                     </div>
                     <div class="stat-icon icon-orange">
                         <i class="bi bi-shop"></i>
@@ -35,7 +31,7 @@
                 <section class="card-surface d-flex justify-content-between align-items-start">
                     <div>
                         <p class="stat-title">Categorías</p>
-                        <h2 class="stat-value">24</h2>
+                        <h2 class="stat-value">{{ $totalCategories }}</h2>
                     </div>
                     <div class="stat-icon icon-blue">
                         <i class="bi bi-tag"></i>
@@ -48,7 +44,7 @@
                 <section class="card-surface d-flex justify-content-between align-items-start">
                     <div>
                         <p class="stat-title">Productos</p>
-                        <h2 class="stat-value">1248</h2>
+                        <h2 class="stat-value">{{ $totalProducts }}</h2>
                     </div>
                     <div class="stat-icon icon-green">
                         <i class="bi bi-box-seam"></i>
@@ -61,7 +57,7 @@
                 <section class="card-surface d-flex justify-content-between align-items-start">
                     <div>
                         <p class="stat-title">Slider</p>
-                        <h2 class="stat-value">8</h2>
+                        <h2 class="stat-value">{{ $totalSliders }}</h2>
                     </div>
                     <div class="stat-icon icon-yellow">
                         <i class="bi bi-images"></i>
@@ -81,55 +77,43 @@
                         <h5 class="m-0 fw-semibold">Comercios Recientes</h5>
                     </div>
 
-                    <div class="comercio-item d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="fw-semibold mb-1">Restaurante Crickesio</h6>
-                            <span class="comercio-category"><i class="bi bi-cup-hot"></i> Restaurante</span>
+                    @forelse($recentCommerces as $commerce)
+                        <div class="comercio-item d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="fw-semibold mb-1">{{ $commerce->dsc_nombre }}</h6>
+                                <span class="comercio-category">
+                                    <i class="bi bi-tag"></i>
+                                    {{ $commerce->categories->first()->dsc_nombre ?? 'Sin categoría' }}
+                                </span>
+                            </div>
+                            <span class="text-secondary small">
+                                {{ $commerce->created_at ? $commerce->created_at->format('Y-m-d') : '—' }}
+                            </span>
                         </div>
-                        <span class="text-secondary small">2024-01-15</span>
-                    </div>
-
-                    <div class="comercio-item d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <h6 class="fw-semibold mb-1">Hotel El Cricko</h6>
-                            <span class="comercio-category"><i class="bi bi-building"></i> Hotel</span>
-                        </div>
-                        <span class="text-secondary small">2024-01-14</span>
-                    </div>
-
-                    <div class="comercio-item d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <h6 class="fw-semibold mb-1">Zapatería La Martha</h6>
-                            <span class="comercio-category"><i class="bi bi-bag"></i> Zapatería</span>
-                        </div>
-                        <span class="text-secondary small">2024-01-13</span>
-                    </div>
-
-                    <div class="comercio-item d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <h6 class="fw-semibold mb-1">Café Central</h6>
-                            <span class="comercio-category"><i class="bi bi-cup-hot"></i> Restaurante</span>
-                        </div>
-                        <span class="text-secondary small">2024-01-12</span>
-                    </div>
-
-                    <div class="comercio-item d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="fw-semibold mb-1">Tech Store</h6>
-                            <span class="comercio-category"><i class="bi bi-laptop"></i> Tecnología</span>
-                        </div>
-                        <span class="text-secondary small">2024-01-11</span>
-                    </div>
+                    @empty
+                        <p class="text-muted mb-0">No hay comercios registrados aún.</p>
+                    @endforelse
                 </section>
             </div>
 
             <!-- Comercios por Categoría -->
             <div class="col-12 col-lg-8">
                 <section class="card-surface p-3 p-md-4 h-100">
-                    {{-- luego irá gráfico --}}
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="stat-icon icon-blue"><i class="bi bi-graph-up"></i></div>
+                        <h5 class="m-0 fw-semibold">Comercios por Categoría</h5>
+                    </div>
+
+                    <ul class="list-unstyled m-0">
+                        @foreach ($commercesByCategory as $cat)
+                            <li class="d-flex justify-content-between border-bottom py-2">
+                                <span>{{ $cat->dsc_nombre }}</span>
+                                <span class="fw-semibold">{{ $cat->commerces_count }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
                 </section>
             </div>
         </div>
     </div>
-
 @endsection
