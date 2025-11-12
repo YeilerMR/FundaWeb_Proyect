@@ -73,7 +73,7 @@
                         </div>
                         <input class="form-control mt-2" type="file" id="productImage" name="dsc_imagen_destacada"
                             accept="image/*" @if (!isset($product)) required @endif>
-                        <small class="text-secondary">PNG/JPG/WEBP, máx.5MB — Ideal horizontal</small>
+                        <small class="text-secondary">PNG/JPG/WEBP, máx. 2MB — Ideal horizontal</small>
                     </div>
                 </div>
             </section>

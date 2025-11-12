@@ -1,6 +1,6 @@
 const ImageValidator = (() => {
     const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-    const maxSizeMB = 5;
+    const maxSizeMB = 2;
 
     function validateFile(file) {
         if (!file) return false;
