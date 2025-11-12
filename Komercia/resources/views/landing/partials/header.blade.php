@@ -24,7 +24,22 @@
                             class="nav-link {{ request()->routeIs('landing.commerces') ? 'active' : '' }}">Comercios</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('login') }}" class="btn btn-primary-custom">Ingresar</a>
+                        @auth
+                            @if (Auth::user()->id_rol == 1)
+                                <a href="{{ route('admin.dashboard') }}" class="btn btn-primary-custom">
+                                    Panel Admin
+                                </a>
+                            @else
+                                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-secondary-custom">
+                                        Cerrar sesión
+                                    </button>
+                                </form>
+                            @endif
+                        @else
+                            <a href="{{ route('login') }}" class="btn btn-primary-custom">Ingresar</a>
+                        @endauth
                     </li>
 
                     {{-- <li class="nav-item">
