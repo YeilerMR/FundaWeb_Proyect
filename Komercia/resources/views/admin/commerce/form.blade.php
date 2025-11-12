@@ -211,7 +211,7 @@
 
             <!-- ACCIONES -->
             <div class="d-flex align-items-center justify-content-end gap-2">
-                <a href="/admin/comercios/index.html" class="btn btn-light">Cancelar</a>
+                <a href="{{route('admin.commerce.index')}}" class="btn btn-light">Cancelar</a>
                 <button type="submit" class="btn btn-primary-custom">Guardar Comercio</button>
             </div>
 

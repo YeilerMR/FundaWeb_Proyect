@@ -71,7 +71,7 @@
 
                 <!-- BOTONES -->
                 <div class="d-flex justify-content-end gap-2 mt-4">
-                    <a href="{{ route('admin.commerce.edit', $commerce->id_comercio) }}" class="btn btn-light">Cancelar</a>
+                    <a href="{{route('admin.commerce.index')}}" class="btn btn-light">Cancelar</a>
                     <button type="submit" class="btn btn-primary-custom">Guardar cambios</button>
                 </div>
             </form>

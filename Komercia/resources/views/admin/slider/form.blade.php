@@ -104,7 +104,7 @@
 
             <!-- ACCIONES -->
             <div class="d-flex justify-content-end gap-2">
-                <button type="reset" class="btn btn-light">Cancelar</button>
+                <a href="{{route('admin.slider.index')}}" class="btn btn-light">Cancelar</a>
                 <button type="submit" class="btn btn-primary-custom">
                     {{ isset($slider) ? 'Actualizar Slider' : 'Guardar Slider' }}
                 </button>
