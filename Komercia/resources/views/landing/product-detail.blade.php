@@ -81,13 +81,20 @@
                     <h5 class="fw-bold mb-4">Galería de Imágenes</h5>
                     <div class="row g-3">
                         @foreach ($product->images as $index => $image)
+                            @php
+                                $src = Str::startsWith($image->dsc_url, ['http://', 'https://'])
+                                    ? $image->dsc_url
+                                    : asset($image->dsc_url);
+                            @endphp
+
                             <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up"
                                 data-aos-delay="{{ 300 + $index * 50 }}">
                                 <a data-fancybox="galeria" data-caption="{{ $product->dsc_nombre }}"
-                                    href="{{ asset($image->ruta_imagen) }}">
+                                    href="{{ $src }}">
                                     <div class="gallery-item">
-                                        <img src="{{ asset($image->ruta_imagen) }}" alt="{{ $product->dsc_nombre }}"
-                                            class="gallery-img">
+                                        <img src="{{ $src }}" alt="{{ $image->dsc_alt ?? $product->dsc_nombre }}"
+                                            class="gallery-img"
+                                            onerror="this.src='{{ asset('TemplateKomercia/assets/img/no-image.png') }}'">
                                         <div class="gallery-overlay">
                                             <i class="bi bi-zoom-in"></i>
                                         </div>
@@ -96,6 +103,11 @@
                             </div>
                         @endforeach
                     </div>
+                </div>
+            @else
+                <div class="text-center text-secondary py-5">
+                    <i class="bi bi-image fs-1 d-block mb-2"></i>
+                    Este producto aún no tiene imágenes en su galería.
                 </div>
             @endif
         </div>
