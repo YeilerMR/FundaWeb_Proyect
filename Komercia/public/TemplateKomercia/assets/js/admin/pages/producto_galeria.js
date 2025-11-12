@@ -12,6 +12,18 @@ $(function () {
         else $empty.hide();
     }
 
+    $input.on("change", function (e) {
+        const files = e.target.files;
+        if (!files || !files.length) return;
+
+        for (const file of files) {
+            if (!ImageValidator.validateFile(file)) {
+                $input.val("");
+                return;
+            }
+        }
+    });
+
     // INIT DROPZONE MODULE
     GalleryModule.bind(
         $("#productGalleryDrop"),

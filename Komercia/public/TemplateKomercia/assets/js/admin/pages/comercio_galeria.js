@@ -3,13 +3,26 @@ $(function () {
     const $grid = $("#galleryGrid");
     const $empty = $("#galleryEmpty");
     const $form = $("#formGallery");
-
+    const $input = $("#galleryInput");
+    
     window.galleryPendingDelete = [];
 
     function togglePlaceholder() {
         if ($grid.children().length === 0) $empty.show();
         else $empty.hide();
     }
+
+    $input.on("change", function (e) {
+        const files = e.target.files;
+        if (!files || !files.length) return;
+
+        for (const file of files) {
+            if (!ImageValidator.validateFile(file)) {
+                $input.val("");
+                return;
+            }
+        }
+    });
 
     GalleryModule.bind($("#galleryDrop"), $grid, $("#galleryInput"), $("#btnPickGallery"), togglePlaceholder);
 

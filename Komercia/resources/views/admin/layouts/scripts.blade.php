@@ -15,6 +15,9 @@
 <!-- Core JS -->
 <script src="{{ asset('TemplateKomercia/assets/js/admin/core/init.js') }}"></script>
 
+<!-- Image Validator -->
+<script src="{{ asset('TemplateKomercia/assets/js/admin/modules/imageValidator.js') }}"></script
+
 <!-- UI Feedback (Toasts + Confirms) -->
 <script src="{{ asset('TemplateKomercia/assets/js/admin/core/ui.js') }}"></script>
 
