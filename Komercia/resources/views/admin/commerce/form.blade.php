@@ -85,7 +85,7 @@
                             <input class="form-control mt-2" type="file" id="commerceImage" name="dsc_imagen_destacada"
                                 accept="image/*" {{ isset($commerce) ? '' : 'required' }}>
 
-                            <small class="text-secondary">PNG/JPG, máx. 2MB — Ideal: 1920×600</small>
+                            <small class="text-secondary">PNG/JPG, máx.5MB — Ideal: 1920×600</small>
                             <div class="invalid-feedback">La imagen destacada es obligatoria.</div>
                         </div>
                     </div>

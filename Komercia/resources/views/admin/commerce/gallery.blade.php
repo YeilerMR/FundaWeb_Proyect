@@ -36,7 +36,7 @@
             <h6 class="section-heading"><i class="bi bi-images me-2"></i>Imágenes del Comercio</h6>
 
             <small class="text-secondary">
-                Formatos permitidos: JPG/PNG · Tamaño recomendado: 2MB por imagen
+                Formatos permitidos: JPG/PNG · Tamaño recomendado:5MB por imagen
             </small>
 
             <!-- FORM DE SUBIDA -->
