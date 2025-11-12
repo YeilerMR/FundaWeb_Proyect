@@ -1,30 +1,28 @@
 $(function () {
-
     const $grid = $("#galleryGrid");
     const $empty = $("#galleryEmpty");
     const $form = $("#formGallery");
     const $input = $("#galleryInput");
-    
+
     window.galleryPendingDelete = [];
+    window.galleryNewFiles = [];
 
     function togglePlaceholder() {
-        if ($grid.children().length === 0) $empty.show();
-        else $empty.hide();
+        $empty.toggle($grid.children().length === 0);
     }
 
-    $input.on("change", function (e) {
-        const files = e.target.files;
-        if (!files || !files.length) return;
-
-        for (const file of files) {
-            if (!ImageValidator.validateFile(file)) {
-                $input.val("");
-                return;
-            }
-        }
+    GalleryModule.bind($("#galleryDrop"), $grid, $input, $("#btnPickGallery"), function () {
+        togglePlaceholder();
+        syncNewFiles();
     });
 
-    GalleryModule.bind($("#galleryDrop"), $grid, $("#galleryInput"), $("#btnPickGallery"), togglePlaceholder);
+    function syncNewFiles() {
+        galleryNewFiles = [];
+        $grid.find(".thumb-item").each(function () {
+            const file = $(this).data("file");
+            if (file) galleryNewFiles.push(file);
+        });
+    }
 
     $(document).on("click", ".thumb-remove", function (e) {
         e.preventDefault();
@@ -41,25 +39,23 @@ $(function () {
 
         $item.remove();
         togglePlaceholder();
+        syncNewFiles();
     });
 
     $form.on("submit", function (e) {
         e.preventDefault();
 
-        const newImagesCount = $("#galleryInput")[0].files.length;
+        const newImagesCount = galleryNewFiles.length;
         const deletedCount = galleryPendingDelete.length;
-
         let previewHTML = "";
 
         if (deletedCount > 0) {
             previewHTML += `<div style="margin-bottom:10px;">
                 <strong>Imágenes a eliminar (${deletedCount}):</strong><br>
                 <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:6px;">`;
-
             galleryPendingDelete.forEach(img => {
                 previewHTML += `<img src="${img.src}" style="width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #ddd;">`;
             });
-
             previewHTML += `</div></div>`;
         }
 
@@ -80,8 +76,23 @@ $(function () {
             width: 500
         }).then((result) => {
             if (result.isConfirmed) {
-                $form.off('submit');
-                $form.submit();
+                Swal.fire({
+                    title: 'Subiendo imágenes...',
+                    html: `<p style="margin-top:10px;">Esto puede tardar unos segundos</p>`,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+
+                        const dt = new DataTransfer();
+                        galleryNewFiles.forEach(f => dt.items.add(f));
+                        $input[0].files = dt.files;
+
+                        $form.off('submit');
+                        $form.submit();
+                    }
+                });
             }
         });
     });
