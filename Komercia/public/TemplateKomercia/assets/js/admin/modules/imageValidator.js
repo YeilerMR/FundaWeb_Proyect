@@ -1,7 +1,6 @@
-// Módulo: ImageValidator (usa jQuery + SweetAlert2)
 const ImageValidator = (() => {
-
     const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    const maxSizeMB = 2;
 
     function validateFile(file) {
         if (!file) return false;
@@ -16,9 +15,21 @@ const ImageValidator = (() => {
             });
             return false;
         }
+
+        const sizeMB = file.size / (1024 * 1024);
+        if (sizeMB > maxSizeMB) {
+            Swal.fire({
+                icon: "warning",
+                title: "Archivo demasiado grande",
+                text: `El tamaño máximo permitido es de ${maxSizeMB} MB. Tu archivo pesa ${sizeMB.toFixed(2)} MB.`,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Entendido"
+            });
+            return false;
+        }
+
         return true;
     }
 
     return { validateFile };
-
 })();
