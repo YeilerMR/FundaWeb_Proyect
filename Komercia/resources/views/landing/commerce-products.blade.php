@@ -73,7 +73,7 @@
                                         </div>
                                         <div class="product-body">
                                             <h6 class="product-title">{{ $product->dsc_nombre }}</h6>
-                                            <p class="product-price">${{ number_format($product->precio, 2) }}</p>
+                                            <p class="product-price">₡{{ number_format($product->precio, 2) }}</p>
                                             <a href="{{ route('landing.product.show', $product->id_producto) }}"
                                                 class="btn btn-product">Ver más</a>
 
