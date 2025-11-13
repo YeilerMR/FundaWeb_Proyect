@@ -1,4 +1,4 @@
-// Módulo: Galería (drag & drop + preview + sincronización con input)
+// Módulo: Galería
 const GalleryModule = (() => {
 
     function addThumb(file, $container, onChange) {
@@ -14,7 +14,6 @@ const GalleryModule = (() => {
 
         $item.data("file", file);
 
-        // Eliminar miniatura
         $item.find(".thumb-remove").on("click", function () {
             $item.remove();
             if (typeof onChange === "function") onChange();
@@ -27,17 +26,14 @@ const GalleryModule = (() => {
     function handleFiles(files, $container, $input, onChange) {
         const dt = new DataTransfer();
 
-        // Mantener archivos anteriores
         for (const oldFile of $input[0].files) dt.items.add(oldFile);
 
-        // Validar y agregar los nuevos archivos
         for (const file of files) {
             if (typeof ImageValidator !== "undefined" && !ImageValidator.validateFile(file)) continue;
             addThumb(file, $container, onChange);
             dt.items.add(file);
         }
 
-        // Actualizar input
         $input[0].files = dt.files;
     }
 
@@ -70,10 +66,8 @@ const GalleryModule = (() => {
 
         $btnPick.on("click", () => $input.trigger("click"));
 
-        // Mover aquí la validación (solo una vez)
         $input.off("change.gallery").on("change.gallery", e => {
             handleFiles(e.target.files, $grid, $input, onChange);
-            // Reset para evitar duplicados al volver a seleccionar lo mismo
             $input.val("");
         });
     }
