@@ -23,15 +23,23 @@ const GalleryModule = (() => {
         if (typeof onChange === "function") onChange();
     }
 
-    function handleFiles(files, $container, $input, onChange) {
+    async function handleFiles(files, $container, $input, onChange) {
+
         const dt = new DataTransfer();
 
-        for (const oldFile of $input[0].files) dt.items.add(oldFile);
+        for (const oldFile of $input[0].files) {
+            dt.items.add(oldFile);
+        }
 
         for (const file of files) {
-            if (typeof ImageValidator !== "undefined" && !ImageValidator.validateFile(file)) continue;
-            addThumb(file, $container, onChange);
-            dt.items.add(file);
+
+            const converted = await ImageValidator.validateAndConvert(file);
+
+            if (!converted) continue;
+
+            addThumb(converted, $container, onChange);
+
+            dt.items.add(converted);
         }
 
         $input[0].files = dt.files;
@@ -66,8 +74,8 @@ const GalleryModule = (() => {
 
         $btnPick.on("click", () => $input.trigger("click"));
 
-        $input.off("change.gallery").on("change.gallery", e => {
-            handleFiles(e.target.files, $grid, $input, onChange);
+        $input.off("change.gallery").on("change.gallery", async e => {
+            await handleFiles(e.target.files, $grid, $input, onChange);
             $input.val("");
         });
     }
