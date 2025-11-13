@@ -4,13 +4,7 @@ $(function () {
    const $fileInput = $("#commerceImage");
    const $thumb = $("#commerceThumb");
 
-   $fileInput.on("change", function (e) {
-      const file = e.target.files?.[0];
-      if (!file) return;
-
-      const url = URL.createObjectURL(file);
-      $thumb.html(`<img src="${url}" alt="preview">`);
-   });
+   ImagePreviewModule.bind($fileInput, $thumb);
 
    /* ===== Inicializar módulos ===== */
    CategoriesModule.init();
