@@ -9,7 +9,8 @@
             </p>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4" style="
+    padding-left: 10px;">
 
             <div class="col-lg-9 px-0" style="width: 100%;">
                 <div class="results-header mb-4" data-aos="fade-up" data-aos-delay="150">
